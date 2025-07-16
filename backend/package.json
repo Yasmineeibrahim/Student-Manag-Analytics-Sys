@@ -1,0 +1,29 @@
+{
+  "name": "project1",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Student Management and analytics system",
+  "homepage": "https://github.com/Yasmineeibrahim/Student-Manag-Analytics-Sys#readme",
+  "bugs": {
+    "url": "https://github.com/Yasmineeibrahim/Student-Manag-Analytics-Sys/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yasmineeibrahim/Student-Manag-Analytics-Sys.git"
+  },
+  "license": "ISC",
+  "author": "Yasmine Emad",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "dotenv": "^16.3.1",
+    "express": "^5.1.0",
+    "mongoose": "^8.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
