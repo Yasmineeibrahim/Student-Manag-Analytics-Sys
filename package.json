@@ -1,0 +1,23 @@
+{
+  "name": "project1",
+  "version": "1.0.0",
+  "description": "Student Management and analytics system",
+  "homepage": "https://github.com/Yasmineeibrahim/Student-Manag-Analytics-Sys#readme",
+  "bugs": {
+    "url": "https://github.com/Yasmineeibrahim/Student-Manag-Analytics-Sys/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yasmineeibrahim/Student-Manag-Analytics-Sys.git"
+  },
+  "license": "ISC",
+  "author": "Yasmine Emad",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
