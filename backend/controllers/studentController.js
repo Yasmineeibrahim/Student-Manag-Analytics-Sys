@@ -1,4 +1,4 @@
-import Student from './studentModel.js';
+import Student from '../models/studentModel.js';
 
 export const deleteStudents = async (req,res) => {
   try{
