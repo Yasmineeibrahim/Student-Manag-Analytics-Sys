@@ -4,9 +4,9 @@ import { fetchStudents , addNewStudent, updateStudent,deleteStudents} from '../c
 
 const router = express.Router();
 
-router.get('/fetch', fetchStudents);
-router.post('/create', addNewStudent);
-router.put('/update/:id', updateStudent);
-router.delete('/delete/:id', deleteStudents);
+router.get('/fetchstudents', fetchStudents);
+router.post('/createstudents', addNewStudent);
+router.put('/updatestudents/:id', updateStudent);
+router.delete('/deletestudents/:id', deleteStudents);
 
 export default router;

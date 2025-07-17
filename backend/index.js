@@ -2,8 +2,9 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import gradeRouter from './routes/gradeRoute.js';
 import router from './routes/studentRoute.js';
-
+import courseRouter from './routes/courseRoute.js';
 const app = express();
 
 app.use(bodyParser.json());
@@ -22,3 +23,5 @@ mongoose.connect(MONGOURL).then(() => {
 });
 
 app.use('/api/students', router);
+app.use('/api/courses', courseRouter);
+app.use('/api/grades', gradeRouter);
