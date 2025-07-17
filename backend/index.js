@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 9000;
 const MONGOURL = process.env.MONGO_URL;
 
 mongoose.connect(MONGOURL).then(() => {
-  console.log('MongoDB connected successfully');
+   console.log('Connected to database:', mongoose.connection.name);
   app.listen(9000, () => {
   console.log('Server is running on http://localhost:9000');
 });
