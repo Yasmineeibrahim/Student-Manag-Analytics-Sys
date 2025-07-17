@@ -151,12 +151,24 @@ form{
 .toggle-pannel h1 {
     margin-top: 0;
 }
-.toggle-pannel h1:first-child {
-    margin-top: 120px;
+
+.welcome-text h1 {
+    margin: 0;            
+    line-height: 1.1; 
+    font-size: 32px;
 }
-.toggle-pannel h1:not(:first-child) {
-    margin-top: 20px;
+
+.welcome-text {
+    margin-top: 100px;
+    text-align: center;
 }
+
+
+dotlottie-wc {
+    margin: 0 !important;
+}
+
+
 .toggle-switch {
     position: fixed;
     top: 0;
