@@ -144,6 +144,10 @@ label {
 .teacher-btn:hover {
   background: #388e5c;
 }
+
+.login-btn:hover {
+  background: #388e5c;
+}
 .illustration {
   background: none;
   border-radius: 0;
