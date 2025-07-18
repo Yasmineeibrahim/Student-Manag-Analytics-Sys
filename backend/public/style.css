@@ -286,7 +286,7 @@ label {
     }
 .welcome-illustration {
   position: relative;
-  top: -160px; /* moves the illustration 20px up */
+  top: -140px; /* moves the illustration 20px up */
   flex: 1;
   min-width: 220px;
   display: flex;
@@ -296,6 +296,7 @@ label {
 }
     .dashboard-row {
       display: flex;
+      flex-wrap: wrap;
       gap: 32px;
     }
     .students-card, .working-hours-card {
@@ -548,3 +549,9 @@ label {
       gap: 32px;
 
     }
+
+    canvas {
+      width: 70%;
+  height: 300px !important;
+  align-items: center;
+}
