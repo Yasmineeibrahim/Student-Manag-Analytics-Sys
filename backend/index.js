@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import gradeRouter from './routes/gradeRoute.js';
 import router from './routes/studentRoute.js';
+import teacherRouter from './routes/teacherRoute.js';
 import courseRouter from './routes/courseRoute.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -32,5 +33,6 @@ app.get('/', (req, res) => {
 app.use('/api/students', router);
 app.use('/api/courses', courseRouter);
 app.use('/api/grades', gradeRouter);
+app.use('/api/teachers',teacherRouter);
 
 

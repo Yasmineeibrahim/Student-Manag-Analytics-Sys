@@ -35,7 +35,7 @@ export const updateStudent = async (req, res) => {
 export const addNewStudent = async (req, res) => {
  try{
     const studentData = new Student(req.body);
-    const { Student_Name, Grade, Email, GPA, Courses } = studentData;
+    const { Student_Name, Grade, Email, Password, GPA, Courses } = studentData;
 
 
     const existingStudent = await Student.findOne({ Email });
