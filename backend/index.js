@@ -1,4 +1,5 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import gradeRouter from './routes/gradeRoute.js';
@@ -15,8 +16,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(bodyParser.json());
 dotenv.config();
 const PORT = process.env.PORT || 9000;
 const MONGOURL = process.env.MONGO_URL;
