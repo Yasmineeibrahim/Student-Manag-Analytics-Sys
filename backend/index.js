@@ -7,9 +7,9 @@ import router from './routes/studentRoute.js';
 import teacherRouter from './routes/teacherRoute.js';
 import courseRouter from './routes/courseRoute.js';
 import path from 'path';
+import bcrypt from 'bcrypt';
 import { fileURLToPath } from 'url';
 import Teacher from './models/teacherModel.js';
-import Student from './models/studentModel.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -35,7 +35,6 @@ app.get('/', (req, res) => {
 });
 
 app.post('/api/teacherLogin', async (req, res) => {
-  console.log('>>> Teacher login route hit');
   console.log('BODY RECEIVED:', req.body);
   let { email, password } = req.body;
 
@@ -55,44 +54,13 @@ app.post('/api/teacherLogin', async (req, res) => {
   return res.status(401).json({ message: 'Invalid credentials' });
     }
     const { Password, ...teacherData } = teacher.toObject();
-    return res.status(200).json({ message: 'Login successful', teacher: teacherData });
 
+    res.status(200).json({ message: 'Login successful', teacher: teacherData });
   } catch (error) {
     console.error('Error during login:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
-
-
-app.post('/api/studentLogin', async (req, res) => {
-  console.log('>>> student login route hit');
-  console.log('BODY RECEIVED:', req.body);
-  let { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ message: 'Email and password are required' });
-  }
-  email = email.trim().toLowerCase();
-  console.log('Login attempt with email:', email);
-  try {
-    const student = await Student.findOne({ Email: email });
-    if (!student) {
-      console.log('Student not found for email:', email);
-      return res.status(404).json({ message: 'Student not found' });
-    }
-
-    if (password !== student.Password) {
-  return res.status(401).json({ message: 'Invalid credentials' });
-    }
-    const { Password, ...studentData } = student.toObject();
-
-    res.status(200).json({ message: 'Login successful', student: studentData });
-  } catch (error) {
-    console.error('Error during login:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  }
-});
-
 
 app.use((req, res, next) => {
   console.log('REQUEST:', req.method, req.url, req.headers['content-type']);

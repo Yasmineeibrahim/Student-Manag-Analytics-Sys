@@ -18,19 +18,17 @@
       <div class="main-content">
         <h1 class="headline">Welcome, Student.<br>Your journey starts here.</h1>
         <p class="subheadline">Access your courses, track your progress, and connect with your campus — all in one place.</p>
-        <form action="/api/studentLogin" method="POST">
-          <div class="login-form">
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" name="email" placeholder="Enter your email" required />
-            </div>
-            <div class="form-group">
-              <label for="password">Password</label>
-              <input type="password" id="password" name="password" placeholder="Enter your password" required />
-            </div>
-            <button type="submit" class="login-btn">Login</button>
-          </div>
-        </form>
+        <div class="login-form">
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter your email" />
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" />
+    </div>
+    <button class="login-btn">Login</button>
+</div>
 
       </div>
     </div>
