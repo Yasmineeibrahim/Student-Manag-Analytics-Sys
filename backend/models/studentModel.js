@@ -25,8 +25,6 @@ const studentSchema = new mongoose.Schema({
     min: 0.0,
     max: 4.0
   },
-  Courses:
-    [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
 });
 
 export default  mongoose.model("Student", studentSchema);

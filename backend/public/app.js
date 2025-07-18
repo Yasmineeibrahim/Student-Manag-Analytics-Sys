@@ -14,6 +14,13 @@ const form = document.getElementById('teacher-login-form');
       const data = await res.json();
 
       if (res.ok) {
+        // Save teacher ID and name to localStorage
+        if (data.teacher && data.teacher._id) {
+          localStorage.setItem('teacherId', data.teacher._id);
+        }
+        if (data.teacher && data.teacher.Teacher_Name) {
+          localStorage.setItem('teacherName', data.teacher.Teacher_Name);
+        }
         window.location.href = '/teacherDashboard.html';
       } else {
         alert(data.message || 'Login failed');

@@ -33,20 +33,29 @@ export const updateStudent = async (req, res) => {
 }
 
 export const addNewStudent = async (req, res) => {
- try{
-    const studentData = new Student(req.body);
-    const { Student_Name, Grade, Email, Password, GPA, Courses } = studentData;
+  try {
+    const studentsArray = req.body; // expect an array of students
 
-
-    const existingStudent = await Student.findOne({ Email });
-    if (existingStudent) {
-      return res.status(400).json({ message: 'Email already exists' });
+    if (!Array.isArray(studentsArray) || studentsArray.length === 0) {
+      return res.status(400).json({ message: 'Request body should be a non-empty array of students' });
     }
-    const savedStudent = await studentData.save();
-    return res.status(201).json({ message: 'Student added successfully', Student: savedStudent });
- } catch (error) {
-  return res.status(400).json({ message: error.message });
- }
+
+    // Check if any email in the array already exists in DB
+    const emails = studentsArray.map(s => s.Email.toLowerCase());
+    const existingStudents = await Student.find({ Email: { $in: emails } }).select('Email');
+
+    if (existingStudents.length > 0) {
+      const existingEmails = existingStudents.map(s => s.Email);
+      return res.status(400).json({ message: `These emails already exist: ${existingEmails.join(', ')}` });
+    }
+
+    // Insert many students
+    const savedStudents = await Student.insertMany(studentsArray);
+
+    return res.status(201).json({ message: 'Students added successfully', students: savedStudents });
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
 };
 
 

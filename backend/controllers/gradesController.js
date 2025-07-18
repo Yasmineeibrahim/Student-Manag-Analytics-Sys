@@ -33,25 +33,44 @@ export const updateGrade = async (req, res) => {
 
 export const addNewGrade = async (req, res) => {
   try {
-    const { Student, Course, Grade: gradeValue } = req.body;
+    const gradesInput = req.body;
 
+    // Check if input is an array (bulk insert)
+    if (Array.isArray(gradesInput)) {
+      // Validate each entry (optional)
+      for (const entry of gradesInput) {
+        if (!entry.Student || !entry.Course || !entry.Grade) {
+          return res.status(400).json({ message: 'Missing Student, Course or Grade in one of the entries' });
+        }
+      }
+
+      // Optionally check for duplicates before inserting:
+      // Here skipping duplicate check for brevity.
+
+      const savedGrades = await Grade.insertMany(gradesInput, { ordered: false });
+      return res.status(201).json({ message: 'grades added successfully', Grades: savedGrades });
+    }
+
+    const { Student, Course, Grade: gradeValue } = gradesInput;
+    if (!Student || !Course || !gradeValue) {
+      return res.status(400).json({ message: 'Missing Student, Course or Grade' });
+    }
     const existingGrade = await Grade.findOne({ Student, Course });
     if (existingGrade) {
       return res.status(400).json({ message: 'mark already input' });
     }
-
     const gradeData = new Grade({
       Student,
       Course,
       Grade: gradeValue
     });
-
     const savedGrade = await gradeData.save();
     return res.status(201).json({ message: 'grade added successfully', Grade: savedGrade });
   } catch (error) {
     return res.status(400).json({ message: error.message });
   }
 };
+
 
 
 

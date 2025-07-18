@@ -9,6 +9,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import Teacher from './models/teacherModel.js';
 import Student from './models/studentModel.js';
+import Grade from './models/gradeModel.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -86,6 +87,42 @@ app.post('/api/studentLogin', async (req, res) => {
 
   } catch (error) {
     console.error('Error during login:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.get('/api/teachers/:id/courses', async (req, res) => {
+  try {
+    const teacher = await Teacher.findById(req.params.id).populate({
+      path: 'Courses',
+      populate: { path: 'Students', select: 'Student_Name _id' }
+    });
+    if (!teacher) return res.status(404).json({ message: 'Teacher not found' });
+    const courses = teacher.Courses;
+    const courseIds = courses.map(c => c._id);
+    // Fetch all grades for these courses
+    const grades = await Grade.find({ Course: { $in: courseIds } }).populate('Student', 'Student_Name');
+    // Map letter grades to numbers
+    const gradeMap = { A: 4, B: 3, C: 2, D: 1, F: 0 };
+    // Aggregate grades per student
+    const studentGrades = {};
+    grades.forEach(g => {
+      if (!g.Student || !g.Grade) return;
+      const sid = g.Student._id.toString();
+      if (!studentGrades[sid]) {
+        studentGrades[sid] = { name: g.Student.Student_Name, grades: [] };
+      }
+      studentGrades[sid].grades.push(gradeMap[g.Grade] ?? 0);
+    });
+    // Calculate average grade per student
+    const studentsWithAvg = Object.entries(studentGrades).map(([id, s]) => ({
+      _id: id,
+      name: s.name,
+      avgGrade: s.grades.length ? (s.grades.reduce((a, b) => a + b, 0) / s.grades.length) : 0
+    }));
+    res.json({ courses, studentsWithAvg });
+  } catch (error) {
+    console.error('Error fetching courses and grades:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
