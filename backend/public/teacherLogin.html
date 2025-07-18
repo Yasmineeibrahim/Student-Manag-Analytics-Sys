@@ -18,7 +18,7 @@
       <div class="main-content">
         <h1 class="headline">Welcome, Teacher.<br>Your classroom, simplified.</h1>
         <p class="subheadline">Manage your classes, monitor student performance, and streamline your teaching experience.</p>
-        <form action="/api/teacherLogin" method="POST">
+        <form method="POST">
           <div class="login-form">
             <div class="form-group">
               <label for="email">Email</label>
@@ -49,5 +49,43 @@
       </div>
     </div>
   </div>
+  <script>
+  const form = document.querySelector('form'); // Or use form id if you have one
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Prevent normal form submission
+
+    const email = form.email.value.trim();
+    const password = form.password.value;
+
+    if (!email || !password) {
+      alert('Please fill in both email and password.');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/teacherLogin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.message === 'Login successful') {
+        // Save teacher name for dashboard page
+        localStorage.setItem('teacherName', data.teacher.Teacher_Name);
+        // Redirect to dashboard
+        window.location.href = '/teacherDashboard.html';
+      } else {
+        alert(data.message || 'Login failed');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred during login.');
+    }
+  });
+</script>
+
 </body>
 </html>
