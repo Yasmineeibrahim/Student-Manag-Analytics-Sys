@@ -202,3 +202,349 @@ label {
     height: 300px;
   }
 }
+
+    .dashboard-container {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      background: #232b3b;
+      color: #fff;
+      width: 100px;
+      min-width: 160px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 0 0 0;
+      border-top-right-radius: 32px;
+    }
+    .sidebar .logo {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 40px;
+      letter-spacing: 1px;
+      margin-left: 30px;
+      
+    }
+    .sidebar nav {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      width: 100%;
+      align-items: center;
+    }
+    .sidebar nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.4rem;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .sidebar nav a.active, .sidebar nav a:hover {
+      opacity: 1;
+    }
+    .sidebar nav span {
+      font-size: 0.8rem;
+      margin-top: 2px;
+    }
+     .welcome-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(44,62,80,0.06);
+      padding: 32px 32px 0 32px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      max-height: 170px;
+      gap: 32px;
+      overflow: visible;
+    }
+    .welcome-text {
+      flex: 1;
+    }
+    .welcome-text h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      margin: 0 0 12px 0;
+    }
+    .welcome-text .highlight {
+      color: #2e6a4a;
+      font-weight: 700;
+    }
+    .welcome-text .progress-summary {
+      color: #888;
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+    .welcome-text .progress-good {
+      color: #ff5e5e;
+      font-weight: 600;
+    }
+.welcome-illustration {
+  position: relative;
+  top: -160px; /* moves the illustration 20px up */
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 100px;
+}
+    .dashboard-row {
+      display: flex;
+      gap: 32px;
+    }
+    .students-card, .working-hours-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(44,62,80,0.06);
+      padding: 24px;
+      flex: 1;
+      min-width: 260px;
+    }
+    .students-card h3 {
+      margin: 0 0 16px 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    .students-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .student-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1rem;
+    }
+    .student-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .student-name {
+      flex: 1;
+      font-weight: 500;
+    }
+    .progress-bar {
+      background: #eaf0fb;
+      border-radius: 8px;
+      height: 8px;
+      width: 80px;
+      margin: 0 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .progress-bar-inner {
+      height: 100%;
+      border-radius: 8px;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .progress-blue { background: #2a4eff; width: 95%; }
+    .progress-yellow { background: #ffb800; width: 75%; }
+    .progress-red { background: #ff5e5e; width: 60%; }
+    .progress-cyan { background: #00cfff; width: 85%; }
+    .student-percent {
+      width: 32px;
+      text-align: right;
+      font-size: 0.95rem;
+      color: #222;
+      font-weight: 500;
+    }
+    .working-hours-card h3 {
+      margin: 0 0 16px 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    .circle-progress {
+      width: 110px;
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      position: relative;
+    }
+    .circle-bg {
+      stroke: #eaf0fb;
+    }
+    .circle-fg {
+      stroke: #2a4eff;
+      transition: stroke-dasharray 0.5s;
+    }
+    .circle-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #222;
+    }
+    .progress-legend {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      font-size: 0.95rem;
+      color: #888;
+      justify-content: center;
+    }
+    .progress-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .progress-dot.progress {
+      background: #ffb800;
+    }
+    .progress-dot.done {
+      background: #2a4eff;
+    }
+    .resources-list {
+      margin-top: 24px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(44,62,80,0.06);
+      padding: 16px 0;
+    }
+    .resource-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 24px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 1rem;
+    }
+    .resource-row:last-child {
+      border-bottom: none;
+    }
+    .resource-badge {
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 8px;
+      padding: 4px 12px;
+      margin-right: 8px;
+      color: #fff;
+      display: inline-block;
+    }
+    .badge-a1 { background: #ffe29a; color: #b48a00; }
+    .badge-b1 { background: #ffbaba; color: #b40000; }
+    .badge-c2 { background: #c2eaff; color: #0077b6; }
+    .resource-title { flex: 1; font-weight: 500; }
+    .resource-file { color: #888; font-size: 0.95rem; margin-right: 12px; }
+    .resource-status { font-size: 0.95rem; margin-right: 12px; }
+    .resource-members { color: #888; font-size: 0.95rem; margin-right: 12px; }
+    .resource-size { color: #888; font-size: 0.95rem; }
+    .rightbar {
+      width: 320px;
+      min-width: 320px;
+      background: none;
+      padding: 40px 24px 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .calendar-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(44,62,80,0.06);
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .calendar-header span {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    .calendar-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      color: #888;
+      font-size: 0.95rem;
+    }
+    .calendar-table th, .calendar-table td {
+      padding: 4px 0;
+      width: 14.2%;
+    }
+    .calendar-table .today {
+      background: #2a4eff;
+      color: #fff;
+      border-radius: 50%;
+      font-weight: 700;
+    }
+    .lessons-card, .tasks-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(44,62,80,0.06);
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+    .lessons-list, .tasks-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .lesson-row, .task-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1rem;
+    }
+    .lesson-badge {
+      width: 6px;
+      height: 32px;
+      border-radius: 4px;
+      margin-right: 8px;
+    }
+    .badge-orange { background: #ffb800; }
+    .badge-blue { background: #2a4eff; }
+    .lesson-title { flex: 1; font-weight: 500; }
+    .lesson-time { color: #888; font-size: 0.95rem; margin-right: 12px; }
+    .lesson-avatars {
+      display: flex;
+      align-items: center;
+      gap: -8px;
+    }
+    .lesson-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #fff;
+      margin-left: -8px;
+    }
+    .task-title { flex: 1; font-weight: 500; }
+    .task-date { color: #888; font-size: 0.95rem; margin-right: 12px; }
+    .task-status {
+      background: #eaf0fb;
+      color: #2a4eff;
+      border-radius: 8px;
+      padding: 2px 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+      .main-content-dashboard {
+      flex: 1.8;
+      padding: 32px 32px 40px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+
+    }

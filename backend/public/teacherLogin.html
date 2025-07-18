@@ -18,19 +18,19 @@
       <div class="main-content">
         <h1 class="headline">Welcome, Teacher.<br>Your classroom, simplified.</h1>
         <p class="subheadline">Manage your classes, monitor student performance, and streamline your teaching experience.</p>
-        <form action="/api/teacherLogin" method="POST">
-          <div class="login-form">
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" name="email" placeholder="Enter your email" required />
-            </div>
-            <div class="form-group">
-              <label for="password">Password</label>
-              <input type="password" id="password" name="password" placeholder="Enter your password" required />
-            </div>
-            <button type="submit" class="login-btn">Login</button>
-          </div>
-        </form>
+        <form id="teacher-login-form">
+  <div class="login-form">
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required />
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required />
+    </div>
+    <button type="submit" class="login-btn">Login</button>
+  </div>
+</form>
       </div>
     </div>
     <div class="main-right">
@@ -52,4 +52,30 @@
     </div>
   </div>
 </body>
+<script>
+  const form = document.getElementById('teacher-login-form');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault(); // prevent default form submit
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+
+    try {
+      const res = await fetch('/api/teacherLogin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        window.location.href = '/teacherDashboard.html';
+      } else {
+        alert(data.message || 'Login failed');
+      }
+    } catch (err) {
+      alert('Server error. Try again later.');
+    }
+  });
+</script>
 </html>
