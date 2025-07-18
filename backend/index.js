@@ -26,6 +26,9 @@ mongoose.connect(MONGOURL).then(() => {
   console.error('MongoDB connection error:', error);
 });
 app.use(express.static(path.join(__dirname, '/public')));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/teacherLogin.html'));
+});
 app.use('/api/students', router);
 app.use('/api/courses', courseRouter);
 app.use('/api/grades', gradeRouter);
