@@ -5,11 +5,15 @@ import dotenv from 'dotenv';
 import gradeRouter from './routes/gradeRoute.js';
 import router from './routes/studentRoute.js';
 import courseRouter from './routes/courseRoute.js';
-const app = express();
+import path from 'path';
+import { fileURLToPath } from 'url';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const app = express();
 app.use(bodyParser.json());
 dotenv.config();
-
 const PORT = process.env.PORT || 9000;
 const MONGOURL = process.env.MONGO_URL;
 
@@ -21,7 +25,9 @@ mongoose.connect(MONGOURL).then(() => {
 }).catch((error) => {
   console.error('MongoDB connection error:', error);
 });
-
+app.use(express.static(path.join(__dirname, '/public')));
 app.use('/api/students', router);
 app.use('/api/courses', courseRouter);
 app.use('/api/grades', gradeRouter);
+
+
