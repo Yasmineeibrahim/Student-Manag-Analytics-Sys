@@ -18,36 +18,35 @@
       <div class="main-content">
         <h1 class="headline">Welcome, Teacher.<br>Your classroom, simplified.</h1>
         <p class="subheadline">Manage your classes, monitor student performance, and streamline your teaching experience.</p>
-        <div class="login-form">
-    <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" placeholder="Enter your email" />
-    </div>
-    <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Enter your password" />
-    </div>
-    <button class="login-btn">Login</button>
-</div>
-
+        <form action="/api/teacherLogin" method="POST">
+          <div class="login-form">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="Enter your email" required />
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" placeholder="Enter your password" required />
+            </div>
+            <button type="submit" class="login-btn">Login</button>
+          </div>
+        </form>
       </div>
     </div>
     <div class="main-right">
       <div class="main-right-header">
-             <a href="studentLogin.html" class="student-link" target="_self">Student</a>
+        <a href="studentLogin.html" class="student-link" target="_self">Student</a>
         <a href="#" class="teacher-btn">Teacher</a>
       </div>
       <div class="illustration">
         <dotlottie-wc
-  src="https://lottie.host/f1e521ca-9109-44aa-a18e-5d3dfcec5064/l4INRhhoG5.lottie"
-  style="width: 600px;height: 600px"
-  speed="1"
-  autoplay
-  loop
-></dotlottie-wc>
+          src="https://lottie.host/f1e521ca-9109-44aa-a18e-5d3dfcec5064/l4INRhhoG5.lottie"
+          style="width: 600px;height: 600px"
+          speed="1"
+          autoplay
+          loop
+        ></dotlottie-wc>
       </div>
- 
-
     </div>
   </div>
 </body>
