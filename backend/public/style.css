@@ -299,7 +299,7 @@ label {
       flex-wrap: wrap;
       gap: 32px;
     }
-    .students-card, .working-hours-card {
+    .students-card, .gpa-card {
       background: #fff;
       border-radius: 16px;
       box-shadow: 0 2px 12px rgba(44,62,80,0.06);
@@ -333,83 +333,10 @@ label {
       flex: 1;
       font-weight: 500;
     }
-    .progress-bar {
-      background: #eaf0fb;
-      border-radius: 8px;
-      height: 8px;
-      width: 80px;
-      margin: 0 8px;
-      position: relative;
-      overflow: hidden;
-    }
-    .progress-bar-inner {
-      height: 100%;
-      border-radius: 8px;
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
-    .progress-blue { background: #2a4eff; width: 95%; }
-    .progress-yellow { background: #ffb800; width: 75%; }
-    .progress-red { background: #ff5e5e; width: 60%; }
-    .progress-cyan { background: #00cfff; width: 85%; }
-    .student-percent {
-      width: 32px;
-      text-align: right;
-      font-size: 0.95rem;
-      color: #222;
-      font-weight: 500;
-    }
-    .working-hours-card h3 {
+    .gpa-card h3 {
       margin: 0 0 16px 0;
       font-size: 1.1rem;
       font-weight: 600;
-    }
-    .circle-progress {
-      width: 110px;
-      height: 110px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto;
-      position: relative;
-    }
-    .circle-bg {
-      stroke: #eaf0fb;
-    }
-    .circle-fg {
-      stroke: #2a4eff;
-      transition: stroke-dasharray 0.5s;
-    }
-    .circle-label {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #222;
-    }
-    .progress-legend {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 12px;
-      font-size: 0.95rem;
-      color: #888;
-      justify-content: center;
-    }
-    .progress-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-    .progress-dot.progress {
-      background: #ffb800;
-    }
-    .progress-dot.done {
-      background: #2a4eff;
     }
     .resources-list {
       margin-top: 24px;
