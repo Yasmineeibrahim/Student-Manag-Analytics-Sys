@@ -11,10 +11,9 @@ async function loadCourseDetails() {
     return;
   }
   try {
-    const res = await fetch(`/api/courses/fetchcourses`);
-    if (!res.ok) throw new Error('Failed to fetch courses');
-    const courses = await res.json();
-    const course = courses.find(c => c._id === courseId);
+    const res = await fetch(`/api/courses/${courseId}`);
+    if (!res.ok) throw new Error('Failed to fetch course');
+    const course = await res.json();
     if (!course) {
       document.getElementById('course-details').textContent = 'Course not found.';
       return;
@@ -33,6 +32,9 @@ async function loadCourseDetails() {
               <span class="resource-badge badge-a1">${s.Student_Name ? s.Student_Name.charAt(0).toUpperCase() : '?'}</span>
               <span class="resource-title">${s.Student_Name}</span>
               <span class="resource-members">${s._id}</span>
+              <span class="resource-members">${s.Grade ? s.Grade : '-'}</span>
+              <button class="student-update-btn" aria-label="Update"><i class="fa fa-pencil-alt"></i></button>
+              <button class="student-delete-btn" aria-label="Delete"><i class="fa fa-trash"></i></button>
             </div>`).join('')}</div>`
         : '<div class="students-resources-list"><div class="resource-row"><span class="resource-title course-empty">No students enrolled.</span></div></div>'}
     `;

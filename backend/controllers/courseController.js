@@ -1,4 +1,5 @@
 import Course from '../models/courseModel.js';
+import Grade from '../models/gradeModel.js';
 
 export const deleteCourse = async (req,res) => {
   try{
@@ -53,7 +54,25 @@ export const fetchCourseById = async (req, res) => {
       return res.status(404).json({ message: 'Course not found' });
     }
 
-    res.json(course);
+    // Fetch grades for each student in this course
+    const grades = await Grade.find({ Course: course._id });
+    // Map studentId to grade
+    const gradeMap = {};
+    grades.forEach(g => {
+      gradeMap[g.Student.toString()] = g.Grade;
+    });
+
+    // Attach grade to each student
+    const studentsWithGrades = course.Students.map(s => ({
+      ...s.toObject(),
+      Grade: gradeMap[s._id.toString()] || '-'
+    }));
+
+    // Return course info with students and their grades
+    res.json({
+      ...course.toObject(),
+      Students: studentsWithGrades
+    });
   } catch (error) {
     console.error('Error fetching course by ID:', error);
     res.status(500).json({ message: 'Internal server error' });

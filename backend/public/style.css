@@ -571,14 +571,19 @@ label {
 .course-info-horizontal {
   display: flex;
   flex-wrap: wrap;
-  gap: 32px;
+  gap: 0;
   align-items: flex-start;
   margin-bottom: 18px;
+  width: 100%;
+  justify-content: space-between;
 }
 .course-meta-horizontal {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex: 1;
+  min-width: 180px;
+  justify-content: flex-start;
 }
 .course-info-label {
   font-weight: 600;
