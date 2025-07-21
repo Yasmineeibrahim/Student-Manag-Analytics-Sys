@@ -54,22 +54,19 @@ export const fetchCourseById = async (req, res) => {
       return res.status(404).json({ message: 'Course not found' });
     }
 
-    // Fetch grades for each student in this course
     const grades = await Grade.find({ Course: course._id });
-    // Map studentId to grade
+
     const gradeMap = {};
     grades.forEach(g => {
       gradeMap[g.Student.toString()] = g.Grade;
     });
 
-    // Attach grade and year to each student
     const studentsWithGrades = course.Students.map(s => ({
       ...s.toObject(),
       Grade: gradeMap[s._id.toString()] || '-',
       Year: s.Grade || '-'
     }));
 
-    // Return course info with students and their grades
     res.json({
       ...course.toObject(),
       Students: studentsWithGrades

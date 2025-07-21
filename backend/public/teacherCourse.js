@@ -24,7 +24,10 @@ async function loadCourseDetails() {
           <div class="course-meta-horizontal"><span class="course-info-label">Credit Hours:</span> <span class="course-info-value">${course.Credit_Hours}</span></div>
           <div class="course-meta-horizontal"><span class="course-info-label">Number of Students:</span> <span class="course-info-value">${Array.isArray(course.Students) ? course.Students.length : 0}</span></div>
         </div>
-      <h3 class="course-section-title">Enrolled Students</h3>
+      <h3 class="course-section-title" style="display:flex;justify-content:space-between;align-items:center;">
+        <span>Enrolled Students</span>
+        <button class="add-student-btn"><i class="fa-solid fa-plus"></i><span>Add New Student</span></button>
+      </h3>
       ${Array.isArray(course.Students) && course.Students.length > 0
         ? `<div class='students-resources-list'>${course.Students.map(s => `
             <div class="resource-row">
@@ -38,7 +41,7 @@ async function loadCourseDetails() {
             </div>`).join('')}</div>`
         : '<div class="students-resources-list"><div class="resource-row"><span class="resource-title course-empty">No students enrolled.</span></div></div>'}
     `;
-    // After rendering the students list
+
     document.querySelectorAll('.student-delete-btn').forEach((btn, idx) => {
       btn.addEventListener('click', async function () {
         const courseId = getCourseIdFromUrl();
@@ -49,7 +52,7 @@ async function loadCourseDetails() {
             method: 'DELETE'
           });
           if (res.ok) {
-            // Remove the student row from the DOM
+            
             btn.closest('.resource-row').remove();
           } else {
             alert('Failed to remove student.');
@@ -60,16 +63,16 @@ async function loadCourseDetails() {
       });
     });
 
-    // Add event listeners to update buttons
+
     document.querySelectorAll('.student-update-btn').forEach((btn, idx) => {
       btn.addEventListener('click', function () {
         const row = btn.closest('.resource-row');
         const student = course.Students[idx];
 
-        // Save original HTML in case of cancel
+   
         const originalHTML = row.innerHTML;
 
-        // Create input fields for name and grade
+ 
         row.innerHTML = `
           <span class="resource-badge badge-a1">${student.Student_Name ? student.Student_Name.charAt(0).toUpperCase() : '?'}</span>
           <input class="student-edit-name" type="text" value="${student.Student_Name}" style="flex:1; font-size:1rem; padding:4px 8px; border-radius:6px; border:1px solid #d1d5d8; margin-right:8px;">
@@ -80,7 +83,6 @@ async function loadCourseDetails() {
           <button class="student-cancel-btn" aria-label="Cancel"><i class="fa fa-times" style="color: #a82929;"></i></button>
         `;
 
-        // Add event listeners for Save and Cancel
         row.querySelector('.student-save-btn').addEventListener('click', async function () {
           const newName = row.querySelector('.student-edit-name').value.trim();
           const newGrade = row.querySelector('.student-edit-grade').value.trim();
@@ -96,7 +98,6 @@ async function loadCourseDetails() {
           }
 
           if (newGrade && newGrade !== student.Grade) {
-            // Find the grade document for this student and course
             const gradeRes = await fetch(`/api/grades/fetchgrades`);
             const grades = gradeRes.ok ? await gradeRes.json() : [];
             const gradeDoc = grades.find(g => g.Student === student._id && g.Course === course._id);
@@ -122,6 +123,94 @@ async function loadCourseDetails() {
         row.querySelector('.student-cancel-btn').addEventListener('click', function () {
           row.innerHTML = originalHTML;
         });
+      });
+    });
+
+    // Add New Student button logic
+    document.querySelector('.add-student-btn').addEventListener('click', function () {
+      const studentsList = document.querySelector('.students-resources-list');
+      // Prevent multiple add rows
+      if (studentsList.querySelector('.add-student-row')) return;
+
+      // Create the input row
+      const addRow = document.createElement('div');
+      addRow.className = 'resource-row add-student-row';
+      addRow.innerHTML = `
+        <span class="resource-badge badge-a1">N</span>
+        <input class="student-add-name" type="text" placeholder="Name" style="flex:1; font-size:1rem; padding:4px 8px; border-radius:6px; border:1px solid #d1d5d8; margin-right:8px;">
+        <input class="student-add-email" type="email" placeholder="Email" style="width:180px; font-size:1rem; padding:4px 8px; border-radius:6px; border:1px solid #d1d5d8; margin-right:8px;">
+        <input class="student-add-password" type="password" placeholder="Password" style="width:120px; font-size:1rem; padding:4px 8px; border-radius:6px; border:1px solid #d1d5d8; margin-right:8px;">
+        <span class="resource-members"></span>
+        <input class="student-add-grade" type="text" placeholder="Grade (A-F)" style="width:48px; font-size:1rem; padding:4px 8px; border-radius:6px; border:1px solid #d1d5d8; margin-right:8px;">
+        <input class="student-add-year" type="number" placeholder="Year" style="width:60px; font-size:1rem; padding:4px 8px; border-radius:6px; border:1px solid #d1d5d8; margin-right:8px;">
+        <button class="student-save-btn" aria-label="Save"><i class="fa fa-check" style="color: #4ecb7a;"></i></button>
+        <button class="student-cancel-btn" aria-label="Cancel"><i class="fa fa-times" style="color: #a82929;"></i></button>
+      `;
+      studentsList.prepend(addRow);
+
+      // Save handler
+      addRow.querySelector('.student-save-btn').addEventListener('click', async function () {
+        const name = addRow.querySelector('.student-add-name').value.trim();
+        const email = addRow.querySelector('.student-add-email').value.trim();
+        const password = addRow.querySelector('.student-add-password').value.trim();
+        const grade = addRow.querySelector('.student-add-grade').value.trim();
+        const year = addRow.querySelector('.student-add-year').value.trim();
+        if (!name || !email || !password || !grade || !year) {
+          alert('Please fill in all fields.');
+          return;
+        }
+        // 1. Create the student in the database
+        let studentId;
+        try {
+          const res = await fetch('/api/students/createstudents', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify([{ Student_Name: name, Grade: year, GPA: 0, Email: email, Password: password, Courses: [] }])
+          });
+          const data = await res.json();
+          if (res.ok && data.students && data.students[0] && data.students[0]._id) {
+            studentId = data.students[0]._id;
+          } else {
+            alert('Failed to create student.');
+            return;
+          }
+        } catch (err) {
+          alert('Server error creating student.');
+          return;
+        }
+        // 2. Add the student to the course
+        const courseId = getCourseIdFromUrl();
+        try {
+          const res = await fetch(`/api/courses/updatecourse/${courseId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ $push: { Students: studentId } })
+          });
+          if (!res.ok) {
+            alert('Failed to add student to course.');
+            return;
+          }
+        } catch (err) {
+          alert('Server error adding student to course.');
+          return;
+        }
+        // 3. Add the grade for this course
+        try {
+          await fetch('/api/grades/addnewgrade', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify([{ Student: studentId, Course: courseId, Grade: grade }])
+          });
+        } catch (err) {
+          // Ignore error for grade creation
+        }
+        alert('Student added!');
+        location.reload();
+      });
+
+      // Cancel handler
+      addRow.querySelector('.student-cancel-btn').addEventListener('click', function () {
+        addRow.remove();
       });
     });
   } catch (err) {
