@@ -88,3 +88,20 @@ export const fetchCourses = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const removeStudentFromCourse = async (req, res) => {
+  try {
+    const { courseId, studentId } = req.params;
+    const course = await Course.findByIdAndUpdate(
+      courseId,
+      { $pull: { Students: studentId } },
+      { new: true }
+    ).populate('Students', 'Student_Name _id Grade');
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+    res.json(course);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
