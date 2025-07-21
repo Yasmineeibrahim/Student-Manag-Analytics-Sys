@@ -20,10 +20,12 @@ async function loadCourseDetails() {
       return;
     }
     document.getElementById('course-details').innerHTML = `
-      <h2 class="course-title">${course.Course_Name}</h2>
-      <div class="course-meta"><span class="course-label">Course Code:</span> <span class="course-value">${course.Course_Code}</span></div>
-      <div class="course-meta"><span class="course-label">Credit Hours:</span> <span class="course-value">${course.Credit_Hours}</span></div>
-      <div class="course-meta"><span class="course-label">Number of Students:</span> <span class="course-value">${Array.isArray(course.Students) ? course.Students.length : 0}</span></div>
+        <h2 class="course-title">${course.Course_Name}</h2>
+        <div class="course-info-horizontal">
+          <div class="course-meta-horizontal"><span class="course-info-label">Course Code:</span> <span class="course-info-value">${course.Course_Code}</span></div>
+          <div class="course-meta-horizontal"><span class="course-info-label">Credit Hours:</span> <span class="course-info-value">${course.Credit_Hours}</span></div>
+          <div class="course-meta-horizontal"><span class="course-info-label">Number of Students:</span> <span class="course-info-value">${Array.isArray(course.Students) ? course.Students.length : 0}</span></div>
+        </div>
       <h3 class="course-section-title">Enrolled Students</h3>
       ${Array.isArray(course.Students) && course.Students.length > 0
         ? `<div class='students-resources-list'>${course.Students.map(s => `
@@ -32,7 +34,7 @@ async function loadCourseDetails() {
               <span class="resource-title">${s.Student_Name}</span>
               <span class="resource-members">${s._id}</span>
             </div>`).join('')}</div>`
-        : '<div class="resources-list"><div class="resource-row"><span class="resource-title course-empty">No students enrolled.</span></div></div>'}
+        : '<div class="students-resources-list"><div class="resource-row"><span class="resource-title course-empty">No students enrolled.</span></div></div>'}
     `;
   } catch (err) {
     document.getElementById('course-details').textContent = 'Error loading course details.';
