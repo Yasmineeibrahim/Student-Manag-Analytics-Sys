@@ -15,15 +15,14 @@
   if (!btn) return;
 
   const courseRow = btn.closest('.resource-row');
-  const viewBtn = courseRow?.querySelector('.resource-btn.view');
-  const courseId = viewBtn?.href?.split('=')[1];
+  const courseId = btn.getAttribute('data-id');
 
   if (!courseId) return alert('Course ID not found.');
 
   if (!confirm('Are you sure you want to remove this course?')) return;
 
   try {
-    const res = await fetch(`/api/courses/${courseId}`, { method: 'DELETE' });
+    const res = await fetch(`/api/courses/deletecourse/${courseId}`, { method: 'DELETE' });
     if (res.ok) {
       courseRow.remove();
     } else {
@@ -88,7 +87,7 @@
           <span class="resource-title">${course.Course_Name || 'Unnamed Course'}</span>
           <span class="resource-members">${Array.isArray(course.Students) ? course.Students.length : 0} members</span>
           <button class="resource-btn view" onclick="location.href='teacherCourse.html?id=${course._id}'">View Course</button>
-          <button class="course-delete-btn" aria-label="Delete"><i class="fa-solid fa-trash" style="color: #a82929;"></i></button>
+          <button class="course-delete-btn" data-id="${course._id}" aria-label="Delete"><i class="fa-solid fa-trash" style="color: #a82929;"></i></button>
         `;
         lessonsList.appendChild(div);
       });
