@@ -18,12 +18,15 @@ async function loadCourseDetails() {
       return;
     }
     document.getElementById('course-details').innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;">
         <h2 class="course-title">${course.Course_Name}</h2>
-        <div class="course-info-horizontal">
-          <div class="course-meta-horizontal"><span class="course-info-label">Course Code:</span> <span class="course-info-value">${course.Course_Code}</span></div>
-          <div class="course-meta-horizontal"><span class="course-info-label">Credit Hours:</span> <span class="course-info-value">${course.Credit_Hours}</span></div>
-          <div class="course-meta-horizontal"><span class="course-info-label">Number of Students:</span> <span class="course-info-value">${Array.isArray(course.Students) ? course.Students.length : 0}</span></div>
-        </div>
+        <button class="update-course-btn" style="font-size:1rem;font-weight:600;background:#4ecb7a;color:#fff;border:none;border-radius:8px;padding:8px 18px;cursor:pointer;">Update Course</button>
+      </div>
+      <div class="course-info-horizontal">
+        <div class="course-meta-horizontal"><span class="course-info-label">Course Code:</span> <span class="course-info-value">${course.Course_Code}</span></div>
+        <div class="course-meta-horizontal"><span class="course-info-label">Credit Hours:</span> <span class="course-info-value">${course.Credit_Hours}</span></div>
+        <div class="course-meta-horizontal"><span class="course-info-label">Number of Students:</span> <span class="course-info-value">${Array.isArray(course.Students) ? course.Students.length : 0}</span></div>
+      </div>
       <h3 class="course-section-title" style="display:flex;justify-content:space-between;align-items:center;">
         <span>Enrolled Students</span>
         <button class="add-student-btn"><i class="fa-solid fa-plus"></i><span>Add New Student</span></button>
@@ -37,10 +40,59 @@ async function loadCourseDetails() {
               <span class="resource-members grade">${s.Grade ? s.Grade : '-'}</span>
               <span class="resource-members year">${s.Year ? `Year: ${s.Year}` : 'Year: -'}</span>
               <button class="student-update-btn" aria-label="Update"><i class="fa-solid fa-pen-to-square" style="color: #004b85;"></i></button>
-              <button class="delete-btn" aria-label="Delete"><i class="fa-solid fa-trash" style="color: #a82929;"></i></button>
+              <button class="student-delete-btn" aria-label="Delete"><i class="fa-solid fa-trash" style="color: #a82929;"></i></button>
             </div>`).join('')}</div>`
         : '<div class="students-resources-list"><div class="resource-row"><span class="resource-title course-empty">No students enrolled.</span></div></div>'}
     `;
+
+    // Update Course button logic
+    document.querySelector('.update-course-btn').addEventListener('click', function () {
+      const detailsDiv = document.getElementById('course-details');
+      const originalHTML = detailsDiv.innerHTML;
+      detailsDiv.innerHTML = `
+        <form id="update-course-form">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <h2 class="course-title">Update Course</h2>
+          </div>
+          <div class="course-info-horizontal">
+            <div class="course-meta-horizontal"><span class="course-info-label">Course Name:</span> <input name="Course_Name" type="text" value="${course.Course_Name}" required style="font-size:1rem;padding:6px 10px;border-radius:8px;border:1px solid #d1d5d8;"></div>
+            <div class="course-meta-horizontal"><span class="course-info-label">Course Code:</span> <input name="Course_Code" type="text" value="${course.Course_Code}" required style="font-size:1rem;padding:6px 10px;border-radius:8px;border:1px solid #d1d5d8;"></div>
+            <div class="course-meta-horizontal"><span class="course-info-label">Credit Hours:</span> <input name="Credit_Hours" type="number" value="${course.Credit_Hours}" required style="font-size:1rem;padding:6px 10px;border-radius:8px;border:1px solid #d1d5d8;width:80px;"></div>
+          </div>
+          <div style="margin-top:24px;display:flex;gap:16px;">
+            <button type="submit" class="add-course-submit-btn">Save</button>
+            <button type="button" class="add-course-cancel-btn" style="background:#eee;color:#333;">Cancel</button>
+          </div>
+        </form>
+      `;
+      document.querySelector('.add-course-cancel-btn').addEventListener('click', function () {
+        detailsDiv.innerHTML = originalHTML;
+      });
+      document.getElementById('update-course-form').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        const form = e.target;
+        const updatedData = {
+          Course_Name: form.Course_Name.value.trim(),
+          Course_Code: form.Course_Code.value.trim(),
+          Credit_Hours: Number(form.Credit_Hours.value)
+        };
+        try {
+          const res = await fetch(`/api/courses/updatecourse/${course._id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(updatedData)
+          });
+          if (res.ok) {
+            alert('Course updated!');
+            location.reload();
+          } else {
+            alert('Failed to update course.');
+          }
+        } catch (err) {
+          alert('Server error. Try again later.');
+        }
+      });
+    });
 
     document.querySelectorAll('.student-delete-btn').forEach((btn, idx) => {
       btn.addEventListener('click', async function () {
