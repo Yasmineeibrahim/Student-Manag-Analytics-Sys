@@ -1,6 +1,6 @@
 const form = document.getElementById('teacher-login-form');
   form.addEventListener('submit', async (e) => {
-    e.preventDefault(); // prevent default form submit
+    e.preventDefault();
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
 
@@ -14,7 +14,6 @@ const form = document.getElementById('teacher-login-form');
       const data = await res.json();
 
       if (res.ok) {
-        // Save teacher ID and name to localStorage
         if (data.teacher && data.teacher._id) {
           localStorage.setItem('teacherId', data.teacher._id);
         }

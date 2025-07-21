@@ -47,7 +47,7 @@ export const addNewTeacher = async (req, res) => {
 
 export const fetchTeachers = async (req, res) => {
   try {
-    const teachers = await Teacher.find(); // fetch all documents
+    const teachers = await Teacher.find();
     res.status(200).json(teachers);
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -34,13 +34,13 @@ export const updateStudent = async (req, res) => {
 
 export const addNewStudent = async (req, res) => {
   try {
-    const studentsArray = req.body; // expect an array of students
+    const studentsArray = req.body;
 
     if (!Array.isArray(studentsArray) || studentsArray.length === 0) {
       return res.status(400).json({ message: 'Request body should be a non-empty array of students' });
     }
 
-    // Check if any email in the array already exists in DB
+
     const emails = studentsArray.map(s => s.Email.toLowerCase());
     const existingStudents = await Student.find({ Email: { $in: emails } }).select('Email');
 
@@ -49,7 +49,7 @@ export const addNewStudent = async (req, res) => {
       return res.status(400).json({ message: `These emails already exist: ${existingEmails.join(', ')}` });
     }
 
-    // Insert many students
+
     const savedStudents = await Student.insertMany(studentsArray);
 
     return res.status(201).json({ message: 'Students added successfully', students: savedStudents });
@@ -61,7 +61,7 @@ export const addNewStudent = async (req, res) => {
 
 export const fetchStudents = async (req, res) => {
   try {
-    const students = await Student.find(); // fetch all documents
+    const students = await Student.find();
     res.status(200).json(students);
   } catch (error) {
     res.status(500).json({ message: error.message });

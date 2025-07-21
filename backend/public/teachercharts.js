@@ -11,7 +11,7 @@
     return;
   }
 
-  let doughnutData; // Declare here so accessible after try
+  let doughnutData;
 
   try {
     const res = await fetch(`/api/teachers/${teacherId}/courses`);
@@ -34,11 +34,11 @@
         label: 'GPA Distribution',
         data: [gpaCounts.A, gpaCounts.B, gpaCounts.C, gpaCounts.D, gpaCounts.F],
         backgroundColor: [
-          '#01451eff', // green
-          '#00375cff', // blue
-          '#f1c40f', // yellow
-          '#ff8922ff', // orange
-          '#ffbdf1ff'  // red
+          '#01451eff',
+          '#00375cff',
+          '#f1c40f', 
+          '#ff8922ff', 
+          '#ffbdf1ff'  
         ],
         hoverOffset: 4
       }]
@@ -72,7 +72,7 @@
     console.error('Error loading courses:', error);
   }
 
-  // Now doughnutData is guaranteed to be declared, can create the chart
+
   const doughnutConfig = {
     type: 'doughnut',
     data: doughnutData
@@ -81,7 +81,7 @@
   if (avgGpaCanvas) new Chart(avgGpaCanvas, doughnutConfig);
   else console.error('#average-gpas canvas not found');
 
-  // Second fetch and bar chart for top 5 students
+
   try {
     const res = await fetch(`/api/teachers/${teacherId}/courses`);
     if (!res.ok) throw new Error('Failed to fetch courses');
