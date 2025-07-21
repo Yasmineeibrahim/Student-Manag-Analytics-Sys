@@ -389,25 +389,25 @@ label {
       margin-bottom: 16px;
     }
 
-    .lessons-card, .tasks-card {
+    .Top-card, .Top-card {
       background: #fff;
       border-radius: 16px;
       box-shadow: 0 2px 12px rgba(44,62,80,0.06);
       padding: 20px 24px;
       margin-bottom: 16px;
     }
-    .lessons-list, .tasks-list {
+    .Top-list, .Top-list {
       display: flex;
       flex-direction: column;
       gap: 16px;
     }
-    .lesson-row, .task-row {
+    .Top-row, .Top-row {
       display: flex;
       align-items: center;
       gap: 12px;
       font-size: 1rem;
     }
-    .lesson-badge {
+    .Top-badge {
       width: 6px;
       height: 32px;
       border-radius: 4px;
@@ -415,14 +415,14 @@ label {
     }
     .badge-orange { background: #ffb800; }
     .badge-blue { background: #2a4eff; }
-    .lesson-title { flex: 1; font-weight: 500; }
-    .lesson-time { color: #888; font-size: 0.95rem; margin-right: 12px; }
-    .lesson-avatars {
+    .Top-title { flex: 1; font-weight: 500; }
+    .Top-time { color: #888; font-size: 0.95rem; margin-right: 12px; }
+    .Top-avatars {
       display: flex;
       align-items: center;
       gap: -8px;
     }
-    .lesson-avatar {
+    .Top-avatar {
       width: 28px;
       height: 28px;
       border-radius: 50%;

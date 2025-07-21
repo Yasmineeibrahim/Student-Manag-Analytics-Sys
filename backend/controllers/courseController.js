@@ -44,11 +44,27 @@ export const addNewCourse = async (req, res) => {
  }
 };
 
+export const fetchCourseById = async (req, res) => {
+  try {
+    const course = await Course.findById(req.params.id)
+      .populate('Students', 'Student_Name _id');
+
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+
+    res.json(course);
+  } catch (error) {
+    console.error('Error fetching course by ID:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
 
 export const fetchCourses = async (req, res) => {
   try {
-    const courses = await Course.find();
+    const courses = await Course.find().populate('Students', 'Student_Name');
     res.status(200).json(courses);
   } catch (error) {
     res.status(500).json({ message: error.message });
-  }}
+  }
+};
