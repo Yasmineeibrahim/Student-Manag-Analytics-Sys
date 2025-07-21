@@ -100,11 +100,10 @@ app.get('/api/teachers/:id/courses', async (req, res) => {
     if (!teacher) return res.status(404).json({ message: 'Teacher not found' });
     const courses = teacher.Courses;
     const courseIds = courses.map(c => c._id);
-    // Fetch all grades for these courses
+ 
     const grades = await Grade.find({ Course: { $in: courseIds } }).populate('Student', 'Student_Name');
-    // Map letter grades to numbers
+
     const gradeMap = { A: 4, B: 3, C: 2, D: 1, F: 0 };
-    // Aggregate grades per student
     const studentGrades = {};
     grades.forEach(g => {
       if (!g.Student || !g.Grade) return;
@@ -114,7 +113,6 @@ app.get('/api/teachers/:id/courses', async (req, res) => {
       }
       studentGrades[sid].grades.push(gradeMap[g.Grade] ?? 0);
     });
-    // Calculate average grade per student
     const studentsWithAvg = Object.entries(studentGrades).map(([id, s]) => ({
       _id: id,
       name: s.name,

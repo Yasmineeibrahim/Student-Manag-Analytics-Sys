@@ -299,12 +299,19 @@ label {
       flex-wrap: wrap;
       gap: 32px;
     }
-    .students-card, .gpa-card {
+    .students-card {
       background: #fff;
       border-radius: 16px;
       box-shadow: 0 2px 12px rgba(44,62,80,0.06);
       padding: 24px;
       flex: 1;
+      min-width: 260px;
+    }
+    .gpa-card{
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(44,62,80,0.06);
+      padding: 24px;
       min-width: 260px;
     }
     .students-card h3 {
@@ -449,7 +456,7 @@ label {
       padding: 8px 24px;
       font-weight: 600;
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.rem;
       border: none;
       transition: background 0.2s, transform 0.2s;
     }

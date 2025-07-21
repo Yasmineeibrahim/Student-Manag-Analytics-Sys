@@ -4,58 +4,75 @@
     const nameEl = document.getElementById('teacherName');
     if (nameEl) nameEl.textContent = teacherName;
   }
+
   const teacherId = localStorage.getItem('teacherId');
   if (!teacherId) {
     console.warn('No teacherId in localStorage');
     return;
   }
+
+  let doughnutData; // Declare here so accessible after try
+
   try {
     const res = await fetch(`/api/teachers/${teacherId}/courses`);
     if (!res.ok) throw new Error('Failed to fetch courses');
     const { courses, studentsWithAvg } = await res.json();
+
+    const gpaCounts = { A: 0, B: 0, C: 0, D: 0, F: 0 };
+    studentsWithAvg.forEach(s => {
+      const g = s.avgGrade;
+      if (g >= 3.5) gpaCounts.A++;
+      else if (g >= 2.5) gpaCounts.B++;
+      else if (g >= 1.5) gpaCounts.C++;
+      else if (g >= 0.5) gpaCounts.D++;
+      else gpaCounts.F++;
+    });
+
+    doughnutData = {
+      labels: ['A (3.5–4.0)', 'B (2.5–3.49)', 'C (1.5–2.49)', 'D (0.5–1.49)', 'F (<0.5)'],
+      datasets: [{
+        label: 'GPA Distribution',
+        data: [gpaCounts.A, gpaCounts.B, gpaCounts.C, gpaCounts.D, gpaCounts.F],
+        backgroundColor: [
+          '#01451eff', // green
+          '#00375cff', // blue
+          '#f1c40f', // yellow
+          '#ff8922ff', // orange
+          '#ffbdf1ff'  // red
+        ],
+        hoverOffset: 4
+      }]
+    };
+
     const avgGpa = studentsWithAvg.reduce((sum, s) => sum + s.avgGrade, 0) / studentsWithAvg.length || 0;
 
-        const gpaNumberEl = document.getElementById('gpa-number');
-        if (gpaNumberEl) {
-        gpaNumberEl.textContent = avgGpa.toFixed(2);
-        } else {
-        console.error('#gpa-number element not found');
-        }
+    const gpaNumberEl = document.getElementById('gpa-number');
+    if (gpaNumberEl) {
+      gpaNumberEl.textContent = avgGpa.toFixed(2);
+    } else {
+      console.error('#gpa-number element not found');
+    }
+
     const lessonsList = document.querySelector('.resources-list');
     if (lessonsList) {
       lessonsList.innerHTML = '';
       courses.forEach(course => {
         const div = document.createElement('div');
-        div.classList.add('resource-row');     
+        div.classList.add('resource-row');
         div.innerHTML = `
           <span class="resource-badge badge-a1">${course.Course_Code.split(' ')[0] || 'N/A'}</span>
           <span class="resource-title">${course.Course_Name || 'Unnamed Course'}</span>
-            <span class="resource-members">${Array.isArray(course.Students) ? course.Students.length : 0} members</span>
+          <span class="resource-members">${Array.isArray(course.Students) ? course.Students.length : 0} members</span>
           <button class="resource-btn view" onclick="location.href='/teacher/course/${course._id}'">View Course</button>
-
         `;
         lessonsList.appendChild(div);
       });
     }
-
   } catch (error) {
     console.error('Error loading courses:', error);
   }
-  
 
-  const doughnutData = {
-    labels: ['Red', 'Blue', 'Yellow'],
-    datasets: [{
-      label: 'My First Dataset',
-      data: [300, 50, 100],
-      backgroundColor: [
-        'rgb(255, 99, 132)',
-        'rgb(54, 162, 235)',
-        'rgb(255, 205, 86)'
-      ],
-      hoverOffset: 4
-    }]
-  };
+  // Now doughnutData is guaranteed to be declared, can create the chart
   const doughnutConfig = {
     type: 'doughnut',
     data: doughnutData
@@ -64,12 +81,14 @@
   if (avgGpaCanvas) new Chart(avgGpaCanvas, doughnutConfig);
   else console.error('#average-gpas canvas not found');
 
+  // Second fetch and bar chart for top 5 students
   try {
     const res = await fetch(`/api/teachers/${teacherId}/courses`);
     if (!res.ok) throw new Error('Failed to fetch courses');
     const { studentsWithAvg } = await res.json();
 
     const sortedStudents = studentsWithAvg.sort((a, b) => b.avgGrade - a.avgGrade);
+
     function getRandom(arr, n) {
       const result = [];
       const taken = new Set();
@@ -82,9 +101,11 @@
       }
       return result;
     }
+
     const random5 = getRandom(sortedStudents, 5);
     const barLabels = random5.map(s => s.name);
     const barData = random5.map(s => s.avgGrade);
+
     function gradeToLetter(grade) {
       if (grade >= 3.5) return 'A';
       if (grade >= 2.5) return 'B';
@@ -143,7 +164,6 @@
     } else {
       console.error('#students-list canvas not found');
     }
-
   } catch (error) {
     console.error('Error loading courses for bar chart:', error);
   }
