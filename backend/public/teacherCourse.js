@@ -22,12 +22,11 @@ async function loadCourseDetails() {
     document.getElementById('course-details').innerHTML = `
       <h2 class="course-title">${course.Course_Name}</h2>
       <div class="course-meta"><span class="course-label">Course Code:</span> <span class="course-value">${course.Course_Code}</span></div>
-      <div class="course-meta"><span class="course-label">Instructor:</span> <span class="course-value">${course.Instructor}</span></div>
       <div class="course-meta"><span class="course-label">Credit Hours:</span> <span class="course-value">${course.Credit_Hours}</span></div>
       <div class="course-meta"><span class="course-label">Number of Students:</span> <span class="course-value">${Array.isArray(course.Students) ? course.Students.length : 0}</span></div>
       <h3 class="course-section-title">Enrolled Students</h3>
       ${Array.isArray(course.Students) && course.Students.length > 0
-        ? `<div class='resources-list'>${course.Students.map(s => `
+        ? `<div class='students-resources-list'>${course.Students.map(s => `
             <div class="resource-row">
               <span class="resource-badge badge-a1">${s.Student_Name ? s.Student_Name.charAt(0).toUpperCase() : '?'}</span>
               <span class="resource-title">${s.Student_Name}</span>
