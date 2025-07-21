@@ -191,4 +191,100 @@
   } catch (error) {
     console.error('Error loading courses for bar chart:', error);
   }
+
 })();
+
+console.log('teachercharts.js loaded');
+
+window.addEventListener('DOMContentLoaded', function() {
+  // Modal logic for Add New Course
+  const addCourseBtn = document.querySelector('.add-course');
+  const addCourseModal = document.getElementById('add-course-modal');
+  const closeModalBtn = document.querySelector('.close-modal');
+  const addCourseForm = document.getElementById('add-course-form');
+
+  if (addCourseBtn && addCourseModal && closeModalBtn && addCourseForm) {
+    addCourseBtn.addEventListener('click', function() {
+      // Set the instructor field to the current teacher's name
+      const teacherName = localStorage.getItem('teacherName') || '';
+      const instructorInput = document.querySelector('#add-course-form input[name="Instructor"]');
+      if (instructorInput) {
+        instructorInput.value = teacherName;
+        // Optionally make it read-only:
+        // instructorInput.readOnly = true;
+      }
+      addCourseModal.style.display = 'flex';
+    });
+    closeModalBtn.addEventListener('click', function() {
+      addCourseModal.style.display = 'none';
+    });
+    addCourseForm.addEventListener('submit', async function(e) {
+      console.log('Add course form submitted');
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        Course_Name: form.Course_Name.value.trim(),
+        Course_Code: form.Course_Code.value.trim(),
+        Credit_Hours: Number(form.Credit_Hours.value),
+        Instructor: form.Instructor.value.trim(),
+        Students: []
+      };
+      try {
+        const res = await fetch('/api/courses/createcourse', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if (res.ok) {
+          const result = await res.json();
+          console.log('Create course API response:', result);
+          console.log('result.Course:', result.Course);
+          console.log('result.Course[0]:', result.Course && result.Course[0]);
+          let newCourseId = null;
+          if (Array.isArray(result.Course) && result.Course[0] && result.Course[0]._id) {
+            newCourseId = result.Course[0]._id;
+          } else if (result.Course && result.Course._id) {
+            newCourseId = result.Course._id;
+          }
+          console.log('Extracted newCourseId:', newCourseId);
+
+          if (!newCourseId) {
+            alert('Failed to get new course ID. Please try again.');
+            return;
+          }
+
+          // Associate the course with the teacher (fetch, update array, PUT)
+          const teacherId = localStorage.getItem('teacherId');
+          console.log('teacherId from localStorage:', teacherId);
+          if (teacherId) {
+            const teacherRes = await fetch(`/api/teachers/${teacherId}`);
+            const teacher = teacherRes.ok ? await teacherRes.json() : null;
+            console.log('Fetched teacher object:', teacher);
+            if (teacher && teacher.Courses) {
+              const updatedCourses = [...teacher.Courses, newCourseId];
+              console.log('Attempting to update teacher with new course:', { teacherId, newCourseId, updatedCourses });
+              const updateRes = await fetch(`/api/teachers/updateteacher/${teacherId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ Courses: updatedCourses })
+              });
+              const updateResult = await updateRes.json();
+              console.log('Teacher update response:', updateResult);
+            }
+          }
+          alert('Course created!');
+          addCourseModal.style.display = 'none';
+          // window.location.href = `teacherCourse.html?id=${newCourseId}`;
+        } else {
+          const err = await res.json();
+          alert('Failed to create course: ' + (err.message || 'Unknown error'));
+        }
+      } catch (err) {
+        alert('Server error. Try again later.');
+        console.error(err);
+      }
+    });
+  } else {
+    console.log('Modal or form elements not found:', { addCourseBtn, addCourseModal, closeModalBtn, addCourseForm });
+  }
+});

@@ -647,3 +647,20 @@ label {
 .resource-members.grade {
   font-weight: 700;
 }
+.modal {
+  position: fixed; left: 0; top: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; z-index: 1000;
+}
+.modal-content {
+  background: #fff; border-radius: 16px; padding: 32px 40px; min-width: 320px; box-shadow: 0 4px 32px rgba(44,62,80,0.12);
+  position: relative;
+}
+#add-course-form input {
+  display: block; width: 100%; margin-bottom: 18px; padding: 10px; border-radius: 8px; border: 1px solid #d1d5d8; font-size: 1rem;
+}
+.add-course-submit-btn {
+  background: #4ecb7a; color: #fff; border: none; border-radius: 8px; padding: 10px 28px; font-weight: 600; font-size: 1rem; cursor: pointer;
+}
+.add-course-submit-btn:hover { background: #388e5c; }
+.close-modal { color: #888; }
+.close-modal:hover { color: #e74c3c; }

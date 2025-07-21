@@ -21,6 +21,7 @@ export const updateTeacher = async (req, res) => {
     if (!teacherExists){
       return res.status(404).json({ message: 'Teacher not found' });
     }
+    console.log('Update teacher request body:', req.body);
     const updatedTeacher = await Teacher.findByIdAndUpdate(id, req.body, { new: true });
     return res.status(200).json({ message: 'Teacher updated successfully', Teacher: updatedTeacher });
   }catch(error){
@@ -52,3 +53,13 @@ export const fetchTeachers = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }}
+
+export const fetchTeacherById = async (req, res) => {
+  try {
+    const teacher = await Teacher.findById(req.params.id);
+    if (!teacher) return res.status(404).json({ message: 'Teacher not found' });
+    res.status(200).json(teacher);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
