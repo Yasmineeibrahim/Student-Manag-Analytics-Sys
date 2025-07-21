@@ -62,45 +62,66 @@ async function loadCourseDetails() {
 
     // Add event listeners to update buttons
     document.querySelectorAll('.student-update-btn').forEach((btn, idx) => {
-      btn.addEventListener('click', async function () {
+      btn.addEventListener('click', function () {
+        const row = btn.closest('.resource-row');
         const student = course.Students[idx];
-        const newName = prompt('Edit student name:', student.Student_Name);
-        if (newName === null) return; // Cancelled
-        const newGrade = prompt('Edit student grade (A/B/C/D/F):', student.Grade || '');
-        if (newGrade === null) return; // Cancelled
 
-        let nameUpdated = false, gradeUpdated = false;
-        if (newName !== student.Student_Name) {
-          const res = await fetch(`/api/students/updatestudents/${student._id}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ Student_Name: newName })
-          });
-          nameUpdated = res.ok;
-        }
+        // Save original HTML in case of cancel
+        const originalHTML = row.innerHTML;
 
-        // Update grade (in grades collection)
-        if (newGrade && newGrade !== student.Grade) {
-          // Find the grade document for this student and course
-          const gradeRes = await fetch(`/api/grades/fetchgrades`);
-          const grades = gradeRes.ok ? await gradeRes.json() : [];
-          const gradeDoc = grades.find(g => g.Student === student._id && g.Course === course._id);
-          if (gradeDoc) {
-            const res = await fetch(`/api/grades/updategrade/${gradeDoc._id}`, {
+        // Create input fields for name and grade
+        row.innerHTML = `
+          <span class="resource-badge badge-a1">${student.Student_Name ? student.Student_Name.charAt(0).toUpperCase() : '?'}</span>
+          <input class="student-edit-name" type="text" value="${student.Student_Name}" style="flex:1; font-size:1rem; padding:4px 8px; border-radius:6px; border:1px solid #d1d5d8; margin-right:8px;">
+          <span class="resource-members">${student._id}</span>
+          <input class="student-edit-grade" type="text" value="${student.Grade ? student.Grade : ''}" style="width:48px; font-size:1rem; padding:4px 8px; border-radius:6px; border:1px solid #d1d5d8; margin-right:8px;">
+          <span class="resource-members year">${student.Year ? `Year: ${student.Year}` : 'Year: -'}</span>
+          <button class="student-save-btn" aria-label="Save"><i class="fa fa-check" style="color: #4ecb7a;"></i></button>
+          <button class="student-cancel-btn" aria-label="Cancel"><i class="fa fa-times" style="color: #a82929;"></i></button>
+        `;
+
+        // Add event listeners for Save and Cancel
+        row.querySelector('.student-save-btn').addEventListener('click', async function () {
+          const newName = row.querySelector('.student-edit-name').value.trim();
+          const newGrade = row.querySelector('.student-edit-grade').value.trim();
+          let nameUpdated = false, gradeUpdated = false;
+
+          if (newName && newName !== student.Student_Name) {
+            const res = await fetch(`/api/students/updatestudents/${student._id}`, {
               method: 'PUT',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ Grade: newGrade, Student: student._id, Course: course._id })
+              body: JSON.stringify({ Student_Name: newName })
             });
-            gradeUpdated = res.ok;
+            nameUpdated = res.ok;
           }
-        }
 
-        if (nameUpdated || gradeUpdated) {
-          alert('Student updated!');
-          location.reload();
-        } else {
-          alert('No changes made or update failed.');
-        }
+          if (newGrade && newGrade !== student.Grade) {
+            // Find the grade document for this student and course
+            const gradeRes = await fetch(`/api/grades/fetchgrades`);
+            const grades = gradeRes.ok ? await gradeRes.json() : [];
+            const gradeDoc = grades.find(g => g.Student === student._id && g.Course === course._id);
+            if (gradeDoc) {
+              const res = await fetch(`/api/grades/updategrade/${gradeDoc._id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ Grade: newGrade, Student: student._id, Course: course._id })
+              });
+              gradeUpdated = res.ok;
+            }
+          }
+
+          if (nameUpdated || gradeUpdated) {
+            alert('Student updated!');
+            location.reload();
+          } else {
+            alert('No changes made or update failed.');
+            row.innerHTML = originalHTML;
+          }
+        });
+
+        row.querySelector('.student-cancel-btn').addEventListener('click', function () {
+          row.innerHTML = originalHTML;
+        });
       });
     });
   } catch (err) {
