@@ -44,8 +44,6 @@ async function loadCourseDetails() {
             </div>`).join('')}</div>`
         : '<div class="students-resources-list"><div class="resource-row"><span class="resource-title course-empty">No students enrolled.</span></div></div>'}
     `;
-
-    // Update Course button logic
     document.querySelector('.update-course-btn').addEventListener('click', function () {
       const detailsDiv = document.getElementById('course-details');
       const originalHTML = detailsDiv.innerHTML;
