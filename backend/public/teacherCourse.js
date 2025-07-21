@@ -37,7 +37,7 @@ async function loadCourseDetails() {
               <span class="resource-members grade">${s.Grade ? s.Grade : '-'}</span>
               <span class="resource-members year">${s.Year ? `Year: ${s.Year}` : 'Year: -'}</span>
               <button class="student-update-btn" aria-label="Update"><i class="fa-solid fa-pen-to-square" style="color: #004b85;"></i></button>
-              <button class="student-delete-btn" aria-label="Delete"><i class="fa-solid fa-trash" style="color: #a82929;"></i></button>
+              <button class="delete-btn" aria-label="Delete"><i class="fa-solid fa-trash" style="color: #a82929;"></i></button>
             </div>`).join('')}</div>`
         : '<div class="students-resources-list"><div class="resource-row"><span class="resource-title course-empty">No students enrolled.</span></div></div>'}
     `;

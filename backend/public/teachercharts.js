@@ -64,6 +64,7 @@
           <span class="resource-title">${course.Course_Name || 'Unnamed Course'}</span>
           <span class="resource-members">${Array.isArray(course.Students) ? course.Students.length : 0} members</span>
           <button class="resource-btn view" onclick="location.href='teacherCourse.html?id=${course._id}'">View Course</button>
+<button class="delete-btn" aria-label="Delete"><i class="fa-solid fa-trash" style="color: #a82929;"></i></button>
         `;
         lessonsList.appendChild(div);
       });
