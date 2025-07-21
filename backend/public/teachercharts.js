@@ -25,14 +25,13 @@
       lessonsList.innerHTML = '';
       courses.forEach(course => {
         const div = document.createElement('div');
-        div.classList.add('resource-row');
+        div.classList.add('resource-row');     
         div.innerHTML = `
-          <span class="resource-badge badge-a1">A1</span>
+          <span class="resource-badge badge-a1">${course.Course_Code.split(' ')[0] || 'N/A'}</span>
           <span class="resource-title">${course.Course_Name || 'Unnamed Course'}</span>
-          <span class="resource-file">Syllabus.pdf</span>
-          <span class="resource-status">• Only view</span>
-          <span class="resource-members">${Array.isArray(course.Students) ? course.Students.length : 0} members</span>
-          <span class="resource-size">28 MB</span>
+            <span class="resource-members">${Array.isArray(course.Students) ? course.Students.length : 0} members</span>
+          <button class="resource-btn view" onclick="location.href='/teacher/course/${course._id}'">View Course</button>
+
         `;
         lessonsList.appendChild(div);
       });
@@ -88,7 +87,6 @@
     const random5 = getRandom(sortedStudents, 5);
     const barLabels = random5.map(s => s.name);
     const barData = random5.map(s => s.avgGrade);
-    // Map avgGrade to letter for display
     function gradeToLetter(grade) {
       if (grade >= 3.5) return 'A';
       if (grade >= 2.5) return 'B';
@@ -104,7 +102,7 @@
         data: {
           labels: barLabels,
           datasets: [{
-            label: 'Average Grade per Student',
+            label: 'Average Grade',
             data: barData,
             backgroundColor: '#2e6a4a',
             datalabels: {

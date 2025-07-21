@@ -323,12 +323,6 @@ label {
       gap: 12px;
       font-size: 1rem;
     }
-    .student-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
     .student-name {
       flex: 1;
       font-weight: 500;
@@ -366,8 +360,6 @@ label {
       display: inline-block;
     }
     .badge-a1 { background: #ffe29a; color: #b48a00; }
-    .badge-b1 { background: #ffbaba; color: #b40000; }
-    .badge-c2 { background: #c2eaff; color: #0077b6; }
     .resource-title { flex: 1; font-weight: 500; }
     .resource-file { color: #888; font-size: 0.95rem; margin-right: 12px; }
     .resource-status { font-size: 0.95rem; margin-right: 12px; }
@@ -389,33 +381,7 @@ label {
       padding: 24px;
       margin-bottom: 16px;
     }
-    .calendar-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-    .calendar-header span {
-      font-weight: 600;
-      font-size: 1.1rem;
-    }
-    .calendar-table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: center;
-      color: #888;
-      font-size: 0.95rem;
-    }
-    .calendar-table th, .calendar-table td {
-      padding: 4px 0;
-      width: 14.2%;
-    }
-    .calendar-table .today {
-      background: #2a4eff;
-      color: #fff;
-      border-radius: 50%;
-      font-weight: 700;
-    }
+
     .lessons-card, .tasks-card {
       background: #fff;
       border-radius: 16px;
@@ -476,7 +442,17 @@ label {
       gap: 32px;
 
     }
-
+    .resource-btn {
+      background: #f9deff;
+      color: #e83dff;
+      border-radius: 8px;
+      padding: 8px 24px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.9rem;
+      border: none;
+      transition: background 0.2s, transform 0.2s;
+    }
     canvas {
       width: 70%;
   height: 300px !important;
