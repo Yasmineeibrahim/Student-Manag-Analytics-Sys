@@ -48,7 +48,7 @@ export const addNewCourse = async (req, res) => {
 export const fetchCourseById = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id)
-      .populate('Students', 'Student_Name _id');
+      .populate('Students', 'Student_Name _id Grade');
 
     if (!course) {
       return res.status(404).json({ message: 'Course not found' });
@@ -62,10 +62,11 @@ export const fetchCourseById = async (req, res) => {
       gradeMap[g.Student.toString()] = g.Grade;
     });
 
-    // Attach grade to each student
+    // Attach grade and year to each student
     const studentsWithGrades = course.Students.map(s => ({
       ...s.toObject(),
-      Grade: gradeMap[s._id.toString()] || '-'
+      Grade: gradeMap[s._id.toString()] || '-',
+      Year: s.Grade || '-'
     }));
 
     // Return course info with students and their grades
