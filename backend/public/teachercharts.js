@@ -1,25 +1,26 @@
 (async function () {
-  // Show teacher name from localStorage
   const teacherName = localStorage.getItem('teacherName');
   if (teacherName) {
     const nameEl = document.getElementById('teacherName');
     if (nameEl) nameEl.textContent = teacherName;
   }
-
-  // Get teacher ID
   const teacherId = localStorage.getItem('teacherId');
   if (!teacherId) {
     console.warn('No teacherId in localStorage');
     return;
   }
-
-  // Fetch courses
   try {
     const res = await fetch(`/api/teachers/${teacherId}/courses`);
     if (!res.ok) throw new Error('Failed to fetch courses');
     const { courses, studentsWithAvg } = await res.json();
+    const avgGpa = studentsWithAvg.reduce((sum, s) => sum + s.avgGrade, 0) / studentsWithAvg.length || 0;
 
-    // Render teacher's courses in the .resources-list section
+        const gpaNumberEl = document.getElementById('gpa-number');
+        if (gpaNumberEl) {
+        gpaNumberEl.textContent = avgGpa.toFixed(2);
+        } else {
+        console.error('#gpa-number element not found');
+        }
     const lessonsList = document.querySelector('.resources-list');
     if (lessonsList) {
       lessonsList.innerHTML = '';
@@ -40,8 +41,8 @@
   } catch (error) {
     console.error('Error loading courses:', error);
   }
+  
 
-  // Doughnut chart static data
   const doughnutData = {
     labels: ['Red', 'Blue', 'Yellow'],
     datasets: [{
@@ -63,15 +64,12 @@
   if (avgGpaCanvas) new Chart(avgGpaCanvas, doughnutConfig);
   else console.error('#average-gpas canvas not found');
 
-  // Bar chart static example
   try {
     const res = await fetch(`/api/teachers/${teacherId}/courses`);
     if (!res.ok) throw new Error('Failed to fetch courses');
     const { studentsWithAvg } = await res.json();
 
-    // Sort students by avgGrade descending
     const sortedStudents = studentsWithAvg.sort((a, b) => b.avgGrade - a.avgGrade);
-    // Pick 5 random students
     function getRandom(arr, n) {
       const result = [];
       const taken = new Set();
