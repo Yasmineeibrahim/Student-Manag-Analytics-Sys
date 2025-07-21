@@ -1,4 +1,3 @@
-// teacherCourse.js
 
 function getCourseIdFromUrl() {
   const params = new URLSearchParams(window.location.search);

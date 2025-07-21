@@ -339,6 +339,31 @@ label {
       font-size: 1.1rem;
       font-weight: 600;
     }
+    .course-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.course-header .my-courses-label {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.course-header .add-course {
+  cursor: pointer;
+  color: #2e6a4a;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.course-header .add-course:hover {
+  text-decoration: underline;
+}
+
     .resources-list {
       margin-top: 24px;
       background: #fff;
