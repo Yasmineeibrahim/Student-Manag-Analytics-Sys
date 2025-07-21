@@ -197,7 +197,6 @@
 console.log('teachercharts.js loaded');
 
 window.addEventListener('DOMContentLoaded', function() {
-  // Modal logic for Add New Course
   const addCourseBtn = document.querySelector('.add-course');
   const addCourseModal = document.getElementById('add-course-modal');
   const closeModalBtn = document.querySelector('.close-modal');
@@ -205,13 +204,12 @@ window.addEventListener('DOMContentLoaded', function() {
 
   if (addCourseBtn && addCourseModal && closeModalBtn && addCourseForm) {
     addCourseBtn.addEventListener('click', function() {
-      // Set the instructor field to the current teacher's name
+
       const teacherName = localStorage.getItem('teacherName') || '';
       const instructorInput = document.querySelector('#add-course-form input[name="Instructor"]');
       if (instructorInput) {
         instructorInput.value = teacherName;
-        // Optionally make it read-only:
-        // instructorInput.readOnly = true;
+        instructorInput.readOnly = true;
       }
       addCourseModal.style.display = 'flex';
     });
@@ -253,7 +251,6 @@ window.addEventListener('DOMContentLoaded', function() {
             return;
           }
 
-          // Associate the course with the teacher (fetch, update array, PUT)
           const teacherId = localStorage.getItem('teacherId');
           console.log('teacherId from localStorage:', teacherId);
           if (teacherId) {
@@ -274,7 +271,7 @@ window.addEventListener('DOMContentLoaded', function() {
           }
           alert('Course created!');
           addCourseModal.style.display = 'none';
-          // window.location.href = `teacherCourse.html?id=${newCourseId}`;
+
         } else {
           const err = await res.json();
           alert('Failed to create course: ' + (err.message || 'Unknown error'));

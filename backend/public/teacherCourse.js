@@ -176,13 +176,13 @@ async function loadCourseDetails() {
       });
     });
 
-    // Add New Student button logic
+
     document.querySelector('.add-student-btn').addEventListener('click', function () {
       const studentsList = document.querySelector('.students-resources-list');
-      // Prevent multiple add rows
+ 
       if (studentsList.querySelector('.add-student-row')) return;
 
-      // Create the input row
+  
       const addRow = document.createElement('div');
       addRow.className = 'resource-row add-student-row';
       addRow.innerHTML = `
@@ -198,7 +198,7 @@ async function loadCourseDetails() {
       `;
       studentsList.prepend(addRow);
 
-      // Save handler
+
       addRow.querySelector('.student-save-btn').addEventListener('click', async function () {
         const name = addRow.querySelector('.student-add-name').value.trim();
         const email = addRow.querySelector('.student-add-email').value.trim();
@@ -209,7 +209,7 @@ async function loadCourseDetails() {
           alert('Please fill in all fields.');
           return;
         }
-        // 1. Create the student in the database
+
         let studentId;
         try {
           const res = await fetch('/api/students/createstudents', {
@@ -228,7 +228,7 @@ async function loadCourseDetails() {
           alert('Server error creating student.');
           return;
         }
-        // 2. Add the student to the course
+
         const courseId = getCourseIdFromUrl();
         try {
           const res = await fetch(`/api/courses/updatecourse/${courseId}`, {
@@ -244,7 +244,7 @@ async function loadCourseDetails() {
           alert('Server error adding student to course.');
           return;
         }
-        // 3. Add the grade for this course
+ 
         try {
           await fetch('/api/grades/addnewgrade', {
             method: 'POST',
@@ -252,13 +252,12 @@ async function loadCourseDetails() {
             body: JSON.stringify([{ Student: studentId, Course: courseId, Grade: grade }])
           });
         } catch (err) {
-          // Ignore error for grade creation
+ 
         }
         alert('Student added!');
         location.reload();
       });
 
-      // Cancel handler
       addRow.querySelector('.student-cancel-btn').addEventListener('click', function () {
         addRow.remove();
       });
