@@ -615,7 +615,7 @@ label {
   font-size: 1.13rem;
   letter-spacing: 0.1px;
 }
-.student-update-btn, .delete-btn {
+.student-update-btn, .course-delete-btn {
   background: #f5f7fa;
   border: none;
   border-radius: 50%;
@@ -636,12 +636,12 @@ label {
   box-shadow: 0 2px 8px rgba(0,75,133,0.10);
   transform: scale(1.08);
 }
-.delete-btn:hover {
+.delete-btn:hover,.course-delete-btn:hover {
   background: #ffeaea;
   box-shadow: 0 2px 8px rgba(168,41,41,0.10);
   transform: scale(1.08);
 }
-.student-update-btn i, .student-delete-btn i {
+.student-update-btn i, .student-delete-btn i, .delete-btn i, .course-delete-btn i {
   font-size: 1.2rem;
 }
 .resource-members.grade {
