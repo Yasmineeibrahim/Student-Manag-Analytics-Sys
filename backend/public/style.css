@@ -366,6 +366,9 @@ label {
 
     .resources-list {
       margin-top: 24px;
+      width: 100%;
+      max-width: 900px;
+      min-width: 600px;
       background: #fff;
       border-radius: 16px;
       box-shadow: 0 2px 12px rgba(44,62,80,0.06);
@@ -489,4 +492,37 @@ label {
       width: 70%;
   height: 300px !important;
   align-items: center;
+}
+
+.course-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2e6a4a;
+  margin-bottom: 8px;
+  text-align: left;
+}
+.course-meta {
+  color: #7a8a7a;
+  font-size: 1.1rem;
+  margin-bottom: 18px;
+  text-align: left;
+}
+.course-label {
+  font-weight: 500;
+  color: #1a3c2b;
+}
+.course-value {
+  color: #4ecb7a;
+  font-weight: 600;
+}
+.course-section-title {
+  margin-top: 32px;
+  font-size: 1.2rem;
+  color: #1a3c2b;
+  text-align: left;
+}
+.course-empty {
+  color: #888;
+  margin-top: 12px;
+  text-align: left;
 }
