@@ -30,9 +30,23 @@ window.addEventListener('DOMContentLoaded', async function() {
   }
 
   function renderInfo() {
-    nameEl.textContent = info.Teacher_Name;
-    emailEl.textContent = info.Email;
-    passwordEl.textContent = '********';
+    document.getElementById('teacher-info').innerHTML = `
+      <div class="settings-row">
+        <span class="settings-label">Name:</span>
+        <span class="settings-value" id="teacher-name">${info.Teacher_Name}</span>
+        <button class="settings-edit-btn" data-field="Teacher_Name"><i class="fa fa-pen"></i></button>
+      </div>
+      <div class="settings-row">
+        <span class="settings-label">Email:</span>
+        <span class="settings-value" id="teacher-email">${info.Email}</span>
+        <button class="settings-edit-btn" data-field="Email"><i class="fa fa-pen"></i></button>
+      </div>
+      <div class="settings-row">
+        <span class="settings-label">Password:</span>
+        <span class="settings-value" id="teacher-password">********</span>
+        <button class="settings-edit-btn" data-field="Password"><i class="fa fa-pen"></i></button>
+      </div>
+    `;
   }
 
   function renderEdit(field) {
@@ -56,14 +70,15 @@ window.addEventListener('DOMContentLoaded', async function() {
         });
         if (!res.ok) throw new Error('Failed to update');
         info[field] = newValue;
+        // Exit edit mode and show updated value
         renderInfo();
       } catch {
         alert('Failed to update.');
       }
-      fetchTeacher();
     };
     row.querySelector('.settings-cancel-btn').onclick = function() {
-      fetchTeacher();
+      // Exit edit mode and revert to original value
+      renderInfo();
     };
   }
 
