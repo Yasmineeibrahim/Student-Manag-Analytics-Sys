@@ -54,6 +54,9 @@ if (studentForm) {
         if (data.student && data.student.Student_Name) {
           localStorage.setItem('studentName', data.student.Student_Name);
         }
+        if (data.student && data.student.GPA !== undefined) {
+          localStorage.setItem('studentGPA', data.student.GPA);
+        }
         window.location.href = '/studentDashboard.html';
       } else {
         alert(data.message || 'Login failed');

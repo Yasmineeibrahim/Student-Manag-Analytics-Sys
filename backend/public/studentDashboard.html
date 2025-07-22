@@ -27,7 +27,7 @@
           <h2>Welcome Back, <span class="highlight" id="studentName"></span><span style="color:#2e6a4a;">!</span></h2>
           <div class="progress-summary">
             Your GPA is 
-            <span id="student-gpa" style="color:#ff5e5e;font-weight:600;">3.8</span>.
+            <span id="student-gpa" style="color:#ff5e5e;font-weight:600;"></span>.
           </div>
           <div class="progress-good">Progress is <span style="color:#ff5e5e;">very good!</span></div>
         </div>
@@ -43,6 +43,7 @@
       </section>
     </main>
   </div>
+  <script src="studentDashboard.js"></script>
   <script>
   const studentName = localStorage.getItem('studentName');
   if (studentName) {
