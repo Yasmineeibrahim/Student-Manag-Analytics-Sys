@@ -77,7 +77,6 @@ window.addEventListener('DOMContentLoaded', async function() {
       }
     });
 
-    // --- Donut Chart: Grade Distribution (Dashboard Style) ---
     const donutCtx = document.getElementById('grade-donut-chart').getContext('2d');
     const gradeBuckets = [
       { label: 'A (3.5–4.0)', color: '#01451e', min: 3.5, max: 4.0 },
@@ -94,7 +93,6 @@ window.addEventListener('DOMContentLoaded', async function() {
       else if (avg >= 0.5) bucketCounts[3]++;
       else bucketCounts[4]++;
     });
-    // Plugin for center label
     const centerTextPlugin = {
       id: 'centerText',
       afterDraw(chart) {

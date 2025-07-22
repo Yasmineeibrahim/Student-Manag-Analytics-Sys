@@ -11,7 +11,6 @@ import Teacher from './models/teacherModel.js';
 import Student from './models/studentModel.js';
 import Grade from './models/gradeModel.js';
 
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
