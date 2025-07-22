@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
 body {
-  background: #eaf6ef; /* Light background for navbar contrast */
+  background: #eaf6ef; 
   font-family: 'Poppins', sans-serif;
   margin: 0;
   padding: 0;
@@ -136,7 +136,8 @@ body {
     }
 .welcome-illustration {
   position: relative;
-  top: -140px;
+  right: -100px;
+  top: -110px;
   flex: 1;
   min-width: 220px;
   display: flex;
