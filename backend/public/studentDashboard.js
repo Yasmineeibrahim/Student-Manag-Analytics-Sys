@@ -97,4 +97,117 @@ async function loadCourseDetails() {
   }
 }
 
-window.addEventListener('DOMContentLoaded', loadCourseDetails); 
+window.addEventListener('DOMContentLoaded', loadCourseDetails);
+
+function renderCoursesBarChart(courses, grades, studentId) {
+  // Prepare data
+  const courseNames = courses.map(c => c.Course_Name || c.Course_Code || 'Course');
+  const courseIds = courses.map(c => c._id);
+  const courseGrades = courseIds.map(cid => {
+    const gradeDoc = grades.find(g => g.Student === studentId && g.Course === cid);
+    return gradeDoc && gradeDoc.Grade ? gradeDoc.Grade : null;
+  });
+  // Convert letter grades to numbers for charting
+  const gradeMap = { 'A': 4, 'B': 3, 'C': 2, 'D': 1, 'F': 0 };
+  const chartGrades = courseGrades.map(g => gradeMap[g] !== undefined ? gradeMap[g] : null);
+
+  // Remove previous chart if exists
+  const chartContainer = document.getElementById('courses-bar-chart-container');
+  if (chartContainer) chartContainer.innerHTML = '<canvas id="courses-bar-chart"></canvas>';
+
+  const canvas = document.getElementById('courses-bar-chart');
+  if (!canvas) {
+    console.error('Canvas for bar chart not found!');
+    return;
+  }
+  const ctx = canvas.getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: courseNames,
+      datasets: [{
+        label: 'Your Grade',
+        data: chartGrades,
+        backgroundColor: '#4ecb7a',
+        borderRadius: 8,
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          min: 0,
+          max: 4,
+          ticks: {
+            stepSize: 1,
+            callback: function(value) {
+              return ['F','D','C','B','A'][value] || value;
+            }
+          },
+          title: { display: true, text: 'Grade' }
+        }
+      },
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+  // Ensure the chart title is present
+  const chartContainerEl = document.getElementById('courses-bar-chart-container');
+  if (chartContainerEl && !chartContainerEl.querySelector('.courses-bar-chart-title')) {
+    chartContainerEl.insertAdjacentHTML('afterbegin', '<div class="courses-bar-chart-title">Course Grades Comparison</div>');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async function() {
+  const studentGPA = localStorage.getItem('studentGPA');
+  if (studentGPA) {
+    document.getElementById('student-gpa').textContent = studentGPA;
+  }
+
+  const studentId = localStorage.getItem('studentId');
+  const lessonsList = document.querySelector('.resources-list');
+  if (studentId && lessonsList) {
+    // Fetch courses and grades in parallel
+    const [coursesRes, gradesRes] = await Promise.all([
+      fetch(`/api/students/${studentId}/courses`),
+      fetch('/api/grades/fetchgrades')
+    ]);
+    const coursesData = await coursesRes.json();
+    const grades = gradesRes.ok ? await gradesRes.json() : [];
+    const courses = coursesData.courses || [];
+    lessonsList.innerHTML = '';
+    courses.forEach(course => {
+      const div = document.createElement('div');
+      div.classList.add('resource-row');
+      div.innerHTML = `
+        <span class="resource-badge badge-a1">${course.Course_Code || 'N/A'}</span>
+        <span class="resource-title">${course.Course_Name || 'Unnamed Course'}</span>
+        <span class="resource-members">${Array.isArray(course.Students) ? course.Students.length : 0} members</span>
+        <button class="resource-btn view" onclick="location.href='/studentCourse.html?id=${course._id}'">View Course</button>
+      `;
+      lessonsList.appendChild(div);
+    });
+    // Add chart container if not present
+    let chartContainer = document.getElementById('courses-bar-chart-container');
+    if (!chartContainer) {
+      chartContainer = document.createElement('div');
+      chartContainer.id = 'courses-bar-chart-container';
+      chartContainer.innerHTML = `
+        <div class="courses-bar-chart-title">Course Grades Comparison</div>
+        <canvas id="courses-bar-chart"></canvas>
+      `;
+      console.log('Chart container HTML (created):', chartContainer.innerHTML);
+      lessonsList.parentNode.insertBefore(chartContainer, lessonsList.nextSibling);
+      console.log('Chart container DOM (created):', chartContainer);
+    } else {
+      chartContainer.innerHTML = `
+        <div class="courses-bar-chart-title">Course Grades Comparison</div>
+        <canvas id="courses-bar-chart"></canvas>
+      `;
+      console.log('Chart container HTML (updated):', chartContainer.innerHTML);
+      console.log('Chart container DOM (updated):', chartContainer);
+    }
+    // Ensure the canvas exists before rendering the chart
+    setTimeout(() => renderCoursesBarChart(courses, grades, studentId), 0);
+  }
+}); 
