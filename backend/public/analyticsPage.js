@@ -12,7 +12,7 @@ window.addEventListener('DOMContentLoaded', async function() {
       document.getElementById('all-students-bar-chart').parentElement.innerHTML += '<div style="margin-top:24px;color:#888;">No students found.</div>';
       return;
     }
-    const sorted = studentsWithAvg.slice().sort((a, b) => b.avgGrade - a.avgGrade);
+    const sorted = studentsWithAvg.slice().sort((a, b) => a.name.localeCompare(b.name));
     const labels = sorted.map(s => s.name);
     const data = sorted.map(s => s.avgGrade);
     function gradeToLetter(grade) {
@@ -30,7 +30,15 @@ window.addEventListener('DOMContentLoaded', async function() {
         datasets: [{
           label: 'Average Grade',
           data: data,
-          backgroundColor: '#2e6a4a',
+        backgroundColor: function(context) {
+          const value = context.raw;
+          if (value >= 3.5) return '#1c5838ff';   
+          if (value >= 2.5) return '#fc9825ff';  
+          if (value >= 1.5) return '#fcacffff';   
+          if (value >= 0.5) return '#d08c60';   
+          return '#d9534f';
+        },
+
           datalabels: {
             anchor: 'end',
             align: 'end',

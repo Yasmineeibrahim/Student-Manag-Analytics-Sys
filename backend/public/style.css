@@ -680,6 +680,7 @@ label {
   text-align: left;
   flex-shrink: 0;
 }
+
 #all-students-bar-chart, #performance-line-chart {
   width: 100% !important;
   max-width: 100%;
@@ -710,7 +711,7 @@ label {
   }
 }
 
-/* Settings Page Styles */
+
 .settings-card {
   max-width: 600px;
   margin: 48px auto 0 auto;

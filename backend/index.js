@@ -84,7 +84,7 @@ app.post('/api/studentLogin', async (req, res) => {
   return res.status(401).json({ message: 'Invalid credentials' });
     }
     const { Password, ...studentData } = student.toObject();
-
+    res.status(200).json({ message: 'Login successful', student: studentData });
   } catch (error) {
     console.error('Error during login:', error);
     res.status(500).json({ message: 'Internal server error' });

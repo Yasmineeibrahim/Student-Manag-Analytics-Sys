@@ -111,8 +111,6 @@
     if (!res.ok) throw new Error('Failed to fetch courses');
     const { studentsWithAvg } = await res.json();
 
-    const sortedStudents = studentsWithAvg.sort((a, b) => b.avgGrade - a.avgGrade);
-
     function getRandom(arr, n) {
       const result = [];
       const taken = new Set();
@@ -126,6 +124,7 @@
       return result;
     }
 
+    const sortedStudents = studentsWithAvg.slice().sort((a, b) => a.name.localeCompare(b.name));
     const random5 = getRandom(sortedStudents, 5);
     const barLabels = random5.map(s => s.name);
     const barData = random5.map(s => s.avgGrade);
