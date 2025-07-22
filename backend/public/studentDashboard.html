@@ -24,7 +24,7 @@
     <main class="main-content-dashboard"> 
       <section class="welcome-card">
         <div class="welcome-text">
-          <h2>Welcome Back, <span class="highlight" ></span></h2>
+          <h2>Welcome Back, <span class="highlight" id="studentName"></span><span style="color:#2e6a4a;">!</span></h2>
           <div class="progress-summary">
             Your GPA is 
             <span id="student-gpa" style="color:#ff5e5e;font-weight:600;">3.8</span>.
@@ -43,10 +43,11 @@
       </section>
     </main>
   </div>
-      
   <script>
+  const studentName = localStorage.getItem('studentName');
+  if (studentName) {
+    document.getElementById('studentName').textContent = studentName;
+  }
 </script>
-
-<script type='module'src ="teachercharts.js"></script>
 </body>
 </html>
