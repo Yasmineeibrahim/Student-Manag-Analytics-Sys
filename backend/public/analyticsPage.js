@@ -76,6 +76,78 @@ window.addEventListener('DOMContentLoaded', async function() {
         }
       }
     });
+
+    // --- Donut Chart: Grade Distribution (Dashboard Style) ---
+    const donutCtx = document.getElementById('grade-donut-chart').getContext('2d');
+    const gradeBuckets = [
+      { label: 'A (3.5–4.0)', color: '#01451e', min: 3.5, max: 4.0 },
+      { label: 'B (2.5–3.49)', color: '#00375c', min: 2.5, max: 3.49 },
+      { label: 'C (1.5–2.49)', color: '#f1c40f', min: 1.5, max: 2.49 },
+      { label: 'D (0.5–1.49)', color: '#ff8922', min: 0.5, max: 1.49 },
+      { label: 'F (<0.5)', color: '#ffbdf1', min: -Infinity, max: 0.49 }
+    ];
+    const bucketCounts = [0, 0, 0, 0, 0];
+    data.forEach(avg => {
+      if (avg >= 3.5) bucketCounts[0]++;
+      else if (avg >= 2.5) bucketCounts[1]++;
+      else if (avg >= 1.5) bucketCounts[2]++;
+      else if (avg >= 0.5) bucketCounts[3]++;
+      else bucketCounts[4]++;
+    });
+    // Plugin for center label
+    const centerTextPlugin = {
+      id: 'centerText',
+      afterDraw(chart) {
+        const { ctx, chartArea: { width, height } } = chart;
+        ctx.save();
+        ctx.font = 'bold 1.3rem Poppins, sans-serif';
+        ctx.fillStyle = '#2e6a4a';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('Total', width / 2, height / 2 - 12);
+        ctx.font = 'bold 2.1rem Poppins, sans-serif';
+        ctx.fillStyle = '#ff5e5e';
+        ctx.fillText(data.length.toString(), width / 2, height / 2 + 18);
+        ctx.restore();
+      }
+    };
+    new Chart(donutCtx, {
+      type: 'doughnut',
+      data: {
+        labels: gradeBuckets.map(b => b.label),
+        datasets: [{
+          label: 'GPA Distribution',
+          data: bucketCounts,
+          backgroundColor: gradeBuckets.map(b => b.color),
+          hoverOffset: 4,
+        }]
+      },
+      options: {
+        responsive: true,
+        cutout: '70%',
+        plugins: {
+          legend: {
+            display: true,
+            position: 'bottom',
+            labels: {
+              font: { family: 'Poppins', size: 15 },
+              color: '#2e6a4a',
+              padding: 18
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const label = context.label || '';
+                const value = context.parsed || 0;
+                return `${label}: ${value} student${value === 1 ? '' : 's'}`;
+              }
+            }
+          }
+        }
+      },
+      plugins: [centerTextPlugin]
+    });
   } catch (error) {
     document.getElementById('all-students-bar-chart').parentElement.innerHTML += '<div style="margin-top:24px;color:#a82929;">Error loading students or chart.</div>';
     console.error(error);

@@ -711,6 +711,15 @@ label {
   }
 }
 
+.analytics-row {
+  display: flex;
+  gap: 32px;
+  margin-top: 24px;
+}
+.half-width {
+  flex: 1 1 0;
+  min-width: 0;
+}
 
 .settings-card {
   max-width: 600px;
