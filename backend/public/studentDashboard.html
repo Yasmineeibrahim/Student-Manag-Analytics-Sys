@@ -2,10 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=<<device-width>>, initial-scale=1.0">
+    <meta name="viewport" content="width=<<device-width>>, initial-scale=1.0">  
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="studentstyle.css">
     <title>Document</title>
 </head>
 <body>
-    <h1>Student Dashboard</h1>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="logo">sams.</div>
+      <nav>
+        <a href="" class="active"><i class="fa-solid fa-table-columns"></i><span>Dashboard</span></a>
+        <a href=""><i class="fa-solid fa-chart-line"></i><span>Analysis</span></a>
+        <a href=""><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+      </nav>
+    </aside>
+    <main class="main-content-dashboard"> 
+      <section class="welcome-card">
+        <div class="welcome-text">
+          <h2>Welcome Back, <span class="highlight" ></span></h2>
+          <div class="progress-summary">
+            Your GPA is 
+            <span id="student-gpa" style="color:#ff5e5e;font-weight:600;">3.8</span>.
+          </div>
+          <div class="progress-good">Progress is <span style="color:#ff5e5e;">very good!</span></div>
+        </div>
+        <div class="welcome-illustration">
+          <dotlottie-wc
+            src="https://lottie.host/262b551a-5181-4189-8939-ef9450947ab4/3VOIRdN55F.lottie"
+            style="width: 380px;height: 380px"
+            speed="1"
+            autoplay
+            loop></dotlottie-wc>
+        </div>
+      </section>
+    </main>
+  </div>
+      
+  <script>
+</script>
+
+<script type='module'src ="teachercharts.js"></script>
 </body>
 </html>
