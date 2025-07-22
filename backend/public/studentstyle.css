@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
 body {
-  background: #eaf6ef; 
+  background: #eaf6ef; /* Light background for navbar contrast */
   font-family: 'Poppins', sans-serif;
   margin: 0;
   padding: 0;
@@ -150,3 +150,57 @@ body {
   padding: 32px;
 }
 
+
+    .resources-list {
+      margin-top: 4px;
+      width: 100%;
+      max-width: 900px;
+      min-width: 600px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(44,62,80,0.06);
+      padding: 14px 0;
+    }
+    .resource-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 24px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 1rem;
+    }
+    .resource-row:last-child {
+      border-bottom: none;
+    }
+    .resource-badge {
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 8px;
+      padding: 4px 12px;
+      margin-right: 8px;
+      color: #fff;
+      display: inline-block;
+    }
+    .badge-a1 { background: #ffe29a; color: #b48a00; }
+    .resource-title { flex: 1; font-weight: 500; }
+    .resource-file { color: #888; font-size: 0.95rem; margin-right: 12px; }
+    .resource-status { font-size: 0.95rem; margin-right: 12px; }
+    .resource-members { color: #888; font-size: 0.95rem; margin-right: 12px; }
+    .resource-size { color: #888; font-size: 0.95rem; }
+
+
+  .course-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+  margin-top: 16px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: #2e6a4a;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}

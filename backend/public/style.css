@@ -651,8 +651,6 @@ label {
 .close-modal { color: #888; }
 .close-modal:hover { color: #e74c3c; }
 
-
-/* Analytics Page Styles - Both Cards */
 .analytics-card {
   width: 100%;
   max-width: none;
