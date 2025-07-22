@@ -1,4 +1,4 @@
-// settingsPage.js
+
 window.addEventListener('DOMContentLoaded', async function() {
   const teacherId = localStorage.getItem('teacherId');
   if (!teacherId) {
@@ -70,14 +70,13 @@ window.addEventListener('DOMContentLoaded', async function() {
         });
         if (!res.ok) throw new Error('Failed to update');
         info[field] = newValue;
-        // Exit edit mode and show updated value
+
         renderInfo();
       } catch {
         alert('Failed to update.');
       }
     };
     row.querySelector('.settings-cancel-btn').onclick = function() {
-      // Exit edit mode and revert to original value
       renderInfo();
     };
   }

@@ -73,7 +73,7 @@ window.addEventListener('DOMContentLoaded', async function() {
     console.error(error);
   }
 
-  // --- Line Chart Logic ---
+
   const lineCanvas = document.getElementById('performance-line-chart');
   if (!lineCanvas) return;
 
@@ -161,10 +161,9 @@ window.addEventListener('DOMContentLoaded', async function() {
     renderLineChart(getGpaHistory());
   }
 
-  // Initial load
+  
   updateGpaHistoryAndChart();
 
-  // Listen for GPA changes in localStorage (from dashboard or other tabs)
   window.addEventListener('storage', function(e) {
     if (e.key === gpaHistoryKey) {
       renderLineChart(getGpaHistory());
