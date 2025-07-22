@@ -152,7 +152,7 @@ body {
 
 
     .resources-list {
-      margin-top: 4px;
+      margin-top: 0;
       width: 100%;
       max-width: 900px;
       min-width: 600px;
@@ -215,3 +215,57 @@ body {
       border: none;
       transition: background 0.2s, transform 0.2s;
     }
+
+.course-section-title {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: flex-start;
+}
+.resources-list {
+  margin-top: 0;
+}
+.course-students-flex {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+}
+.students-list-section {
+  flex: 2;
+  margin-top: 0;
+}
+.course-details-section {
+  flex: 1.5;
+  min-width: 320px;
+  max-width: 480px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(44,62,80,0.06);
+  padding: 24px 24px 16px 24px;
+}
+.course-title {
+  margin-top: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2e6a4a;
+}
+.course-info-horizontal {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  font-size: 1.15rem;
+}
+.course-meta-horizontal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.course-info-label {
+  font-weight: 600;
+  color: #2e6a4a;
+}
+.course-info-value {
+  color: #444;
+  font-weight: 500;
+}
