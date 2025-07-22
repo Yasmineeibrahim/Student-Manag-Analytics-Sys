@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <span class="resource-badge badge-a1">${course.Course_Code || 'N/A'}</span>
             <span class="resource-title">${course.Course_Name || 'Unnamed Course'}</span>
             <span class="resource-members">${Array.isArray(course.Students) ? course.Students.length : 0} members</span>
-            <button class="resource-btn view" onclick="location.href=''">View Course</button>
+            <button class="resource-btn view" onclick="location.href='/studentCourse.html?courseId=${course._id}'">View Course</button>
           `;
           lessonsList.appendChild(div);
         });
