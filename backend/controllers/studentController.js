@@ -1,4 +1,5 @@
 import Student from '../models/studentModel.js';
+import Course from '../models/courseModel.js';
 
 export const deleteStudents = async (req,res) => {
   try{
@@ -66,3 +67,17 @@ export const fetchStudents = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }}
+
+export const fetchStudentCourses = async (req, res) => {
+  try {
+    const studentId = req.params.id;
+    // Find the student and populate their courses
+    const student = await Student.findById(studentId).populate('Courses');
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+    res.json({ courses: student.Courses });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching student courses', error: error.message });
+  }
+};
