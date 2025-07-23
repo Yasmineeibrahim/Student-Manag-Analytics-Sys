@@ -158,6 +158,58 @@ function renderCoursesBarChart(courses, grades, studentId) {
   }
 }
 
+async function showStudentRank() {
+  const studentId = localStorage.getItem('studentId');
+  let studentGPA = parseFloat(localStorage.getItem('studentGPA'));
+  let studentGrade = localStorage.getItem('studentGrade');
+
+  // If grade is not in localStorage, fetch it from the API
+  if (!studentGrade || isNaN(parseInt(studentGrade))) {
+    if (studentId) {
+      const res = await fetch('/api/students/fetchstudents');
+      if (res.ok) {
+        const allStudents = await res.json();
+        const me = allStudents.find(s => s._id === studentId);
+        if (me) {
+          studentGrade = me.Grade;
+          studentGPA = me.GPA;
+          localStorage.setItem('studentGrade', studentGrade);
+        }
+      }
+    }
+  } else {
+    studentGrade = parseInt(studentGrade);
+  }
+
+  if (!studentId || isNaN(studentGPA) || isNaN(studentGrade)) return;
+
+ 
+  const res = await fetch('/api/students/fetchstudents');
+  if (!res.ok) return;
+  const allStudents = await res.json();
+
+
+  const sameGrade = allStudents.filter(s => s.Grade === studentGrade);
+
+ 
+  sameGrade.sort((a, b) => b.GPA - a.GPA);
+
+ 
+  const rank = sameGrade.findIndex(s => s._id === studentId) + 1;
+
+  const container = document.querySelector('.left-vertical-container');
+  if (container) {
+    container.innerHTML = `
+      <div style="padding:32px; text-align:center;">
+        <div style="font-size:2.5rem; font-weight:700; color:#2e6a4a;">#${rank}</div>
+        <div style="font-size:1.2rem; color:#888;">Your rank in Grade ${studentGrade}</div>
+        <div style="margin-top:12px; font-size:1rem;">Out of ${sameGrade.length} students</div>
+      </div>
+    `;
+  }
+}
+document.addEventListener('DOMContentLoaded', showStudentRank);
+
 document.addEventListener('DOMContentLoaded', async function() {
   const studentGPA = localStorage.getItem('studentGPA');
   if (studentGPA) {
@@ -167,7 +219,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   const studentId = localStorage.getItem('studentId');
   const lessonsList = document.querySelector('.resources-list');
   if (studentId && lessonsList) {
-    // Fetch courses and grades in parallel
+   
     const [coursesRes, gradesRes] = await Promise.all([
       fetch(`/api/students/${studentId}/courses`),
       fetch('/api/grades/fetchgrades')
@@ -187,7 +239,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       `;
       lessonsList.appendChild(div);
     });
-    // Add chart container if not present
+  
     let chartContainer = document.getElementById('courses-bar-chart-container');
     if (!chartContainer) {
       chartContainer = document.createElement('div');
@@ -207,7 +259,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       console.log('Chart container HTML (updated):', chartContainer.innerHTML);
       console.log('Chart container DOM (updated):', chartContainer);
     }
-    // Ensure the canvas exists before rendering the chart
+
     setTimeout(() => renderCoursesBarChart(courses, grades, studentId), 0);
   }
 }); 
