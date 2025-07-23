@@ -167,6 +167,8 @@ html, body {
 
     .resources-list {
       margin-top: 0;
+      margin-left: 0 !important;
+      margin-right: 24px;
       width: 100%;
       max-width: 900px;
       min-width: 600px;
@@ -302,10 +304,9 @@ html, body {
 .dashboard-courses-row {
   display: flex;
   flex-direction: row;
-  gap: 32px;
+  gap: 0;
   align-items: flex-start;
   width: 100%;
-  max-width: 1200px;
   margin: 0 auto 32px auto;
   box-sizing: border-box;
 }
