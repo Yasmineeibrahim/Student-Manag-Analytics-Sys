@@ -81,3 +81,16 @@ export const fetchStudentCourses = async (req, res) => {
     res.status(500).json({ message: 'Error fetching student courses', error: error.message });
   }
 };
+
+export const fetchStudentById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const student = await Student.findById(id);
+    if (!student) {
+      return res.status(404).json({ message: 'Student not found' });
+    }
+    return res.status(200).json(student);
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};

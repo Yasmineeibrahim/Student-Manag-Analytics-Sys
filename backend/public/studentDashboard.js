@@ -100,18 +100,17 @@ async function loadCourseDetails() {
 window.addEventListener('DOMContentLoaded', loadCourseDetails);
 
 function renderCoursesBarChart(courses, grades, studentId) {
-  // Prepare data
+
   const courseNames = courses.map(c => c.Course_Name || c.Course_Code || 'Course');
   const courseIds = courses.map(c => c._id);
   const courseGrades = courseIds.map(cid => {
     const gradeDoc = grades.find(g => g.Student === studentId && g.Course === cid);
     return gradeDoc && gradeDoc.Grade ? gradeDoc.Grade : null;
   });
-  // Convert letter grades to numbers for charting
   const gradeMap = { 'A': 4, 'B': 3, 'C': 2, 'D': 1, 'F': 0 };
   const chartGrades = courseGrades.map(g => gradeMap[g] !== undefined ? gradeMap[g] : null);
 
-  // Remove previous chart if exists
+ 
   const chartContainer = document.getElementById('courses-bar-chart-container');
   if (chartContainer) chartContainer.innerHTML = '<canvas id="courses-bar-chart"></canvas>';
 
@@ -151,7 +150,7 @@ function renderCoursesBarChart(courses, grades, studentId) {
       }
     }
   });
-  // Ensure the chart title is present
+
   const chartContainerEl = document.getElementById('courses-bar-chart-container');
   if (chartContainerEl && !chartContainerEl.querySelector('.courses-bar-chart-title')) {
     chartContainerEl.insertAdjacentHTML('afterbegin', '<div class="courses-bar-chart-title">Course Grades Comparison</div>');
