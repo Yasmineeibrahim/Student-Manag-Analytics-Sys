@@ -229,6 +229,22 @@ html, body {
       border: none;
       transition: background 0.2s, transform 0.2s;
     }
+    #calendar-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(44,62,80,0.06);
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+        .rightbar {
+      width: 320px;
+      min-width: 320px;
+      background: none;
+      padding: 40px 24px 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
 
 .course-section-title {
   margin-top: 0;
