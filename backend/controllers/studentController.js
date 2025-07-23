@@ -94,3 +94,18 @@ export const fetchStudentById = async (req, res) => {
     return res.status(400).json({ message: error.message });
   }
 };
+
+export const fetchStudentGpaHistory = async (req, res) => {
+  try {
+    // Dummy data for testing
+    const gpaHistory = [
+      { semester: 'Fall 2022', gpa: 3.2 },
+      { semester: 'Spring 2023', gpa: 3.5 },
+      { semester: 'Fall 2023', gpa: 3.7 },
+      { semester: 'Spring 2024', gpa: 3.8 }
+    ];
+    return res.status(200).json({ gpaHistory });
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};

@@ -368,7 +368,6 @@ html, body {
   margin-left: 0;
 }
 
-/* --- Settings Card Styles (copied from style.css) --- */
 .settings-card {
   max-width: 400px;
   margin: 48px auto 0 auto;
@@ -460,4 +459,18 @@ html, body {
 }
 .logout-btn:hover {
   background: #d13c3c;
+}
+#gpa-line-chart-container {
+ transform: translate(-160px, -600px); 
+  margin: 32px auto 0 auto;
+  width: 40%;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(44,62,80,0.06);
+  padding: 24px 32px;
+}
+.gpa-line-chart-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
 }

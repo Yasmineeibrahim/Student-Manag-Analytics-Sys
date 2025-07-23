@@ -100,7 +100,6 @@ async function loadCourseDetails() {
 window.addEventListener('DOMContentLoaded', loadCourseDetails);
 
 function renderCoursesBarChart(courses, grades, studentId) {
-
   const courseNames = courses.map(c => c.Course_Name || c.Course_Code || 'Course');
   const courseIds = courses.map(c => c._id);
   const courseGrades = courseIds.map(cid => {
@@ -110,9 +109,8 @@ function renderCoursesBarChart(courses, grades, studentId) {
   const gradeMap = { 'A': 4, 'B': 3, 'C': 2, 'D': 1, 'F': 0 };
   const chartGrades = courseGrades.map(g => gradeMap[g] !== undefined ? gradeMap[g] : null);
 
- 
   const chartContainer = document.getElementById('courses-bar-chart-container');
-  if (chartContainer) chartContainer.innerHTML = '<canvas id="courses-bar-chart"></canvas>';
+  if (chartContainer) chartContainer.innerHTML = '<div class="courses-bar-chart-title">Course Grades Comparison</div><canvas id="courses-bar-chart"></canvas>';
 
   const canvas = document.getElementById('courses-bar-chart');
   if (!canvas) {
@@ -150,11 +148,6 @@ function renderCoursesBarChart(courses, grades, studentId) {
       }
     }
   });
-
-  const chartContainerEl = document.getElementById('courses-bar-chart-container');
-  if (chartContainerEl && !chartContainerEl.querySelector('.courses-bar-chart-title')) {
-    chartContainerEl.insertAdjacentHTML('afterbegin', '<div class="courses-bar-chart-title">Course Grades Comparison</div>');
-  }
 }
 
 async function showStudentRank() {
@@ -216,15 +209,8 @@ async function showStudentRank() {
 document.addEventListener('DOMContentLoaded', showStudentRank);
 
 document.addEventListener('DOMContentLoaded', async function() {
-  const studentGPA = localStorage.getItem('studentGPA');
-  if (studentGPA) {
-    document.getElementById('student-gpa').textContent = studentGPA;
-  }
-
   const studentId = localStorage.getItem('studentId');
-  const lessonsList = document.querySelector('.resources-list');
-  if (studentId && lessonsList) {
-   
+  if (studentId) {
     const [coursesRes, gradesRes] = await Promise.all([
       fetch(`/api/students/${studentId}/courses`),
       fetch('/api/grades/fetchgrades')
@@ -232,39 +218,67 @@ document.addEventListener('DOMContentLoaded', async function() {
     const coursesData = await coursesRes.json();
     const grades = gradesRes.ok ? await gradesRes.json() : [];
     const courses = coursesData.courses || [];
-    lessonsList.innerHTML = '';
-    courses.forEach(course => {
-      const div = document.createElement('div');
-      div.classList.add('resource-row');
-      div.innerHTML = `
-        <span class="resource-badge badge-a1">${course.Course_Code || 'N/A'}</span>
-        <span class="resource-title">${course.Course_Name || 'Unnamed Course'}</span>
-        <span class="resource-members">${Array.isArray(course.Students) ? course.Students.length : 0} members</span>
-        <button class="resource-btn view" onclick="location.href='/studentCourse.html?id=${course._id}'">View Course</button>
-      `;
-      lessonsList.appendChild(div);
-    });
-  
     let chartContainer = document.getElementById('courses-bar-chart-container');
     if (!chartContainer) {
       chartContainer = document.createElement('div');
       chartContainer.id = 'courses-bar-chart-container';
-      chartContainer.innerHTML = `
-        <div class="courses-bar-chart-title">Course Grades Comparison</div>
-        <canvas id="courses-bar-chart"></canvas>
-      `;
-      console.log('Chart container HTML (created):', chartContainer.innerHTML);
-      lessonsList.parentNode.insertBefore(chartContainer, lessonsList.nextSibling);
-      console.log('Chart container DOM (created):', chartContainer);
-    } else {
-      chartContainer.innerHTML = `
-        <div class="courses-bar-chart-title">Course Grades Comparison</div>
-        <canvas id="courses-bar-chart"></canvas>
-      `;
-      console.log('Chart container HTML (updated):', chartContainer.innerHTML);
-      console.log('Chart container DOM (updated):', chartContainer);
+      chartContainer.innerHTML = '<div class="courses-bar-chart-title">Course Grades Comparison</div><canvas id="courses-bar-chart"></canvas>';
+      document.querySelector('.dashboard-right-col').prepend(chartContainer);
     }
-
     setTimeout(() => renderCoursesBarChart(courses, grades, studentId), 0);
+  }
+}); 
+
+async function renderGpaLineChart(studentId) {
+  if (!studentId) return;
+  try {
+    const res = await fetch(`/api/students/${studentId}/gpahistory`);
+    if (!res.ok) throw new Error('Failed to fetch GPA history');
+    const data = await res.json();
+    const gpaHistory = data.gpaHistory || [];
+    if (!Array.isArray(gpaHistory) || gpaHistory.length === 0) return;
+    const labels = gpaHistory.map(entry => entry.semester || entry.term || '');
+    const gpas = gpaHistory.map(entry => entry.gpa);
+    const ctx = document.getElementById('gpa-line-chart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'GPA',
+          data: gpas,
+          borderColor: '#4ecb7a',
+          backgroundColor: 'rgba(78,203,122,0.1)',
+          tension: 0.3,
+          fill: true,
+          pointRadius: 4,
+          pointBackgroundColor: '#4ecb7a',
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            min: 0,
+            max: 4,
+            ticks: {
+              stepSize: 1
+            },
+            title: { display: true, text: 'GPA' }
+          }
+        },
+        plugins: {
+          legend: { display: false }
+        }
+      }
+    });
+  } catch (err) {
+    console.error('Error rendering GPA line chart:', err);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  const studentId = localStorage.getItem('studentId');
+  if (studentId && document.getElementById('gpa-line-chart')) {
+    renderGpaLineChart(studentId);
   }
 }); 
