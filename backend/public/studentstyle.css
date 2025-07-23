@@ -299,19 +299,40 @@ html, body {
   color: #444;
   font-weight: 500;
 }
+.dashboard-courses-row {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 32px auto;
+  box-sizing: border-box;
+}
+.dashboard-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 1 1 0;
+  min-width: 340px;
+  max-width: 420px;
+}
+#courses-bar-chart-container,
+.calendar-card {
+  width: 100%;
+}
 #courses-bar-chart-container {
-  width: 400px;
   height: 260px;
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 2px 12px rgba(44,62,80,0.06);
   padding: 18px 24px 0 24px;
-  margin-left: 32px;
-  float: right;
   display: flex;
   flex-direction: column;
   align-items: center;
-   margin-top: -140px; /* << Add this line */
+  margin-left: 0;
+  float: none;
+  margin-top: 0;
 }
 .courses-bar-chart-title {
   font-size: 1.2rem;
@@ -319,4 +340,16 @@ html, body {
   color: #2e6a4a;
   margin-bottom: 8px;
   text-align: center;
+}
+.calendar-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(44,62,80,0.06);
+  padding: 24px;
+  margin-bottom: 16px;
+  width: 115%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
