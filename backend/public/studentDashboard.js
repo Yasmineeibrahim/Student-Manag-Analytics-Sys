@@ -163,7 +163,6 @@ async function showStudentRank() {
   let studentGPA = parseFloat(localStorage.getItem('studentGPA'));
   let studentGrade = localStorage.getItem('studentGrade');
 
-  // If grade is not in localStorage, fetch it from the API
   if (!studentGrade || isNaN(parseInt(studentGrade))) {
     if (studentId) {
       const res = await fetch('/api/students/fetchstudents');
@@ -200,7 +199,14 @@ async function showStudentRank() {
   const container = document.querySelector('.left-vertical-container');
   if (container) {
     container.innerHTML = `
-      <div style="padding:32px; text-align:center;">
+      <div style="padding:32px; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; height:100%;">
+        <dotlottie-wc
+          src="https://lottie.host/40337ab6-145b-421e-809f-ec95ff83c7bd/J2sqHYvbip.lottie"
+          style="width: 180px; height: 180px; margin-bottom: 16px;"
+          speed="1"
+          autoplay
+          loop
+        ></dotlottie-wc>
         <div style="font-size:2.5rem; font-weight:700; color:#2e6a4a;">#${rank}</div>
         <div style="font-size:1.2rem; color:#888;">Your rank in Grade ${studentGrade}</div>
         <div style="margin-top:12px; font-size:1rem;">Out of ${sameGrade.length} students</div>
