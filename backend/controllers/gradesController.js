@@ -1,7 +1,7 @@
 import Grade from "../models/gradeModel.js";
 import Course from "../models/courseModel.js";
 import Student from "../models/studentModel.js";
-//dlete grade using grade id from grades collection
+//delete grade using grade id from grades collection
 export const deleteGrade = async (req, res) => {
   try {
     const id = req.params.id;

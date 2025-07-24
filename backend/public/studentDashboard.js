@@ -144,7 +144,11 @@ async function loadCourseDetails() {
   }
 }
 
-window.addEventListener("DOMContentLoaded", loadCourseDetails);
+window.addEventListener("DOMContentLoaded", function() {
+  if (document.getElementById("course-details")) {
+    loadCourseDetails();
+  }
+});
 
 /**
  * Renders a bar chart comparing the student's grades across their courses.
@@ -294,36 +298,38 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 /**
- * Renders a line chart showing the student's GPA history over time.
+ * Renders a bar chart showing the student's GPA history over time (per semester/term).
  * @param {string} studentId - The current student's ID.
  */
-async function renderGpaLineChart(studentId) {
+async function renderGpaBarChart(studentId) {
+  console.log("renderGpaBarChart called", studentId);
   if (!studentId) return;
   try {
     const res = await fetch(`/api/students/${studentId}/gpahistory`);
     if (!res.ok) throw new Error("Failed to fetch GPA history");
     const data = await res.json();
     const gpaHistory = data.gpaHistory || [];
-    if (!Array.isArray(gpaHistory) || gpaHistory.length === 0) return;
-    const labels = gpaHistory.map(
-      (entry) => entry.semester || entry.term || ""
-    );
-    const gpas = gpaHistory.map((entry) => entry.gpa);
-    const ctx = document.getElementById("gpa-line-chart").getContext("2d");
+    if (!Array.isArray(gpaHistory) || gpaHistory.length === 0) {
+      console.log("No GPA history data");
+      return;
+    }
+    const labels = gpaHistory.map(entry => entry.semester || entry.term || "");
+    const gpas = gpaHistory.map(entry => entry.gpa);
+    console.log("GPA BAR CHART DATA", { labels, gpas });
+    const canvas = document.getElementById("gpa-bar-chart");
+    if (!canvas) { console.log("gpa-bar-chart canvas not found"); return; }
+    const ctx = canvas.getContext("2d");
+    if (!ctx) { console.log("gpa-bar-chart context is null"); return; }
     new Chart(ctx, {
-      type: "line",
+      type: "bar",
       data: {
         labels: labels,
         datasets: [
           {
             label: "GPA",
             data: gpas,
-            borderColor: "#4ecb7a",
-            backgroundColor: "rgba(78,203,122,0.1)",
-            tension: 0.3,
-            fill: true,
-            pointRadius: 4,
-            pointBackgroundColor: "#4ecb7a",
+            backgroundColor: "#4ecb7a",
+            borderRadius: 8,
           },
         ],
       },
@@ -344,13 +350,85 @@ async function renderGpaLineChart(studentId) {
       },
     });
   } catch (err) {
-    console.error("Error rendering GPA line chart:", err);
+    console.error("Error rendering GPA bar chart:", err);
   }
 }
 
+/**
+ * Renders a bar chart comparing the student's GPA with all students in the same year (grade).
+ * @param {string} studentId - The current student's ID.
+ */
+async function renderGpaComparisonBarChart(studentId) {
+  console.log("renderGpaComparisonBarChart called", studentId);
+  if (!studentId) return;
+  try {
+    const studentRes = await fetch(`/api/students/fetchstudents`);
+    if (!studentRes.ok) throw new Error("Failed to fetch students");
+    const allStudents = await studentRes.json();
+    const me = allStudents.find(s => s._id === studentId);
+    if (!me || typeof me.Grade === 'undefined' || typeof me.GPA === 'undefined') {
+      console.log("Current student not found or missing Grade/GPA", { me });
+      return;
+    }
+    const year = me.Grade;
+    const peersRes = await fetch(`/api/students/fetchstudents?grade=${year}`);
+    if (!peersRes.ok) throw new Error("Failed to fetch peers");
+    const peers = await peersRes.json();
+    peers.sort((a, b) => b.GPA - a.GPA);
+    const labels = peers.map(s => s.Student_Name === me.Student_Name ? `${s.Student_Name} (You)` : s.Student_Name);
+    const gpas = peers.map(s => s.GPA);
+    console.log("GPA COMPARISON BAR CHART DATA", { labels, gpas });
+    const canvas = document.getElementById("gpa-comparison-bar-chart");
+    if (!canvas) { console.log("gpa-comparison-bar-chart canvas not found"); return; }
+    const ctx = canvas.getContext("2d");
+    if (!ctx) { console.log("gpa-comparison-bar-chart context is null"); return; }
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "GPA",
+            data: gpas,
+            backgroundColor: labels.map(l => l.includes("(You)") ? "#4ecb7a" : "#b2d8c5"),
+            borderRadius: 8,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            min: 0,
+            max: 4,
+            ticks: {
+              stepSize: 1,
+            },
+            title: { display: true, text: "GPA" },
+          },
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: { enabled: false }  // This disables the hover tooltip
+        },
+        hover: { mode: null }  // This disables the hover highlighting
+      },
+    });
+  } catch (err) {
+    console.error("Error rendering GPA comparison bar chart:", err);
+  }
+}
+
+// Replace the GPA line chart with a bar chart and add the comparison chart below it
+// This should run on DOMContentLoaded
+
 document.addEventListener("DOMContentLoaded", function () {
   const studentId = localStorage.getItem("studentId");
-  if (studentId && document.getElementById("gpa-line-chart")) {
-    renderGpaLineChart(studentId);
+  // GPA history bar chart
+  if (studentId && document.getElementById("gpa-bar-chart")) {
+    renderGpaBarChart(studentId);
+  }
+  // GPA comparison bar chart
+  if (studentId && document.getElementById("gpa-comparison-bar-chart")) {
+    renderGpaComparisonBarChart(studentId);
   }
 });

@@ -79,9 +79,16 @@ export const addNewStudent = async (req, res) => {
 };
 
 // Fetch all students from the students collection
+/**
+ * Fetch all students, or filter by grade if ?grade=YEAR is provided.
+ */
 export const fetchStudents = async (req, res) => {
   try {
-    const students = await Student.find();
+    let filter = {};
+    if (req.query.grade) {
+      filter.Grade = Number(req.query.grade);
+    }
+    const students = await Student.find(filter);
     res.status(200).json(students);
   } catch (error) {
     res.status(500).json({ message: error.message });

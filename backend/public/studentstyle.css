@@ -248,9 +248,10 @@ body {
   padding: 8px 24px;
   font-weight: 600;
   text-decoration: none;
-  font-size: 0rem;
+  font-size: 0.9rem;  /* Changed from 0rem to show the text */
   border: none;
   transition: background 0.2s, transform 0.2s;
+  cursor: pointer;  /* Added to show it's clickable */
 }
 #calendar-card {
   background: #fff;
@@ -496,4 +497,36 @@ body {
   font-weight: 600;
   font-size: 1.1rem;
   margin-bottom: 12px;
+}
+#gpa-bar-chart-container,
+#gpa-comparison-bar-chart-container {
+  width: 60%;
+  margin: 32px auto 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.06);
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.gpa-bar-chart-title,
+.gpa-comparison-bar-chart-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2e6a4a;
+  margin-bottom: 8px;
+  text-align: center;
+}
+#gpa-comparison-bar-chart-container {
+  width: 46%;
+  margin: 32px auto 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.06);
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-140px, -530px);
 }
