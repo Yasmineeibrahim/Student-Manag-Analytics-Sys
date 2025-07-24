@@ -1,6 +1,6 @@
 import Student from '../models/studentModel.js';
 import Course from '../models/courseModel.js';
-
+// delete student using student id from students collection
 export const deleteStudents = async (req,res) => {
   try{
     const id = req.params.id;
@@ -18,7 +18,7 @@ export const deleteStudents = async (req,res) => {
 
 
 
-
+// update student parameters using student id
 export const updateStudent = async (req, res) => {
   try{
     const id=req.params.id;
@@ -32,6 +32,7 @@ export const updateStudent = async (req, res) => {
     return res.status(400).json({ message: error.message });
   }
 }
+//add new student to the students collection
 
 export const addNewStudent = async (req, res) => {
   try {
@@ -50,7 +51,7 @@ export const addNewStudent = async (req, res) => {
       return res.status(400).json({ message: `These emails already exist: ${existingEmails.join(', ')}` });
     }
 
-
+//if the input is an array, it will add multiple students at once
     const savedStudents = await Student.insertMany(studentsArray);
 
     return res.status(201).json({ message: 'Students added successfully', students: savedStudents });
@@ -59,7 +60,7 @@ export const addNewStudent = async (req, res) => {
   }
 };
 
-
+// Fetch all students from the students collection
 export const fetchStudents = async (req, res) => {
   try {
     const students = await Student.find();
@@ -68,10 +69,12 @@ export const fetchStudents = async (req, res) => {
     res.status(500).json({ message: error.message });
   }}
 
+  //get courses of specific student using student id
+  // This will return the courses the student is enrolled in
 export const fetchStudentCourses = async (req, res) => {
   try {
     const studentId = req.params.id;
-    // Find the student and populate their courses
+    // Find the student and display their courses
     const student = await Student.findById(studentId).populate('Courses');
     if (!student) {
       return res.status(404).json({ message: 'Student not found' });
@@ -81,7 +84,7 @@ export const fetchStudentCourses = async (req, res) => {
     res.status(500).json({ message: 'Error fetching student courses', error: error.message });
   }
 };
-
+// Fetch a specific student by ID
 export const fetchStudentById = async (req, res) => {
   try {
     const id = req.params.id;
@@ -94,7 +97,10 @@ export const fetchStudentById = async (req, res) => {
     return res.status(400).json({ message: error.message });
   }
 };
-
+// Fetch GPA history for a specific student
+// This is a dummy implementation for testing purposes
+// In a real application, you would fetch this data from a database or another service
+//used in student profile page to show GPA history
 export const fetchStudentGpaHistory = async (req, res) => {
   try {
     // Dummy data for testing

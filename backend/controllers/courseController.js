@@ -1,6 +1,6 @@
 import Course from '../models/courseModel.js';
 import Grade from '../models/gradeModel.js';
-
+//delete course using course id
 export const deleteCourse = async (req,res) => {
   try{
     const id = req.params.id;
@@ -14,7 +14,7 @@ export const deleteCourse = async (req,res) => {
     return res.status(400).json({ message: error.message });
   }
 }
-
+//update courses using course id
 export const updateCourse = async (req, res) => {
   try{
     const id=req.params.id;
@@ -28,7 +28,7 @@ export const updateCourse = async (req, res) => {
     return res.status(400).json({ message: error.message });
   }
 }
-
+//add new course to the course collection
 export const addNewCourse = async (req, res) => {
  try{
     const courseData = new Course(req.body);
@@ -44,7 +44,7 @@ export const addNewCourse = async (req, res) => {
   return res.status(400).json({ message: error.message });
  }
 };
-
+//get course using course id and return its students and their grades from courses,students, and grades collection
 export const fetchCourseById = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id)
@@ -76,7 +76,7 @@ export const fetchCourseById = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
-
+//get all courses and displayes the student names instead of their ids
 export const fetchCourses = async (req, res) => {
   try {
     const courses = await Course.find().populate('Students', 'Student_Name');
@@ -85,7 +85,7 @@ export const fetchCourses = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
+//remove student from course using course id and student id
 export const removeStudentFromCourse = async (req, res) => {
   try {
     const { courseId, studentId } = req.params;

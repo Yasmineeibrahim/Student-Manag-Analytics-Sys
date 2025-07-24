@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
-
+// Define the grade schema
+// This schema includes fields for student ID, course ID, and the grade
+// The Student and Course fields are ObjectIds that reference the Student and Course models
 const gradeSchema = new mongoose.Schema({
   Student: {
     type: mongoose.Schema.Types.ObjectId,
@@ -17,5 +19,6 @@ const gradeSchema = new mongoose.Schema({
     enum: ['A', 'B', 'C', 'D', 'F']
   }
 });
-
+// Export the Grade model based on the grade schema
+// This model will be used to interact with the "grades" collection in the database
 export default mongoose.model("Grade", gradeSchema);

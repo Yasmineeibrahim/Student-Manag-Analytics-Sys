@@ -1,7 +1,7 @@
 import Grade from '../models/gradeModel.js';
 import Course from '../models/courseModel.js';
 import Student from '../models/studentModel.js';
-
+//dlete grade using grade id from grades collection
 export const deleteGrade = async (req,res) => {
   try{
     const id = req.params.id;
@@ -16,7 +16,7 @@ export const deleteGrade = async (req,res) => {
   }
 }
 
-
+//update grade of student in specific course using grade id
 export const updateGrade = async (req, res) => {
   try{
     const id=req.params.id;
@@ -30,7 +30,8 @@ export const updateGrade = async (req, res) => {
     return res.status(400).json({ message: error.message });
   }
 }
-
+//add new grade to the grades collection by providing student id, course id, and grade
+//if the input is an array, it will add multiple grades at once
 export const addNewGrade = async (req, res) => {
   try {
     const gradesInput = req.body;
@@ -70,7 +71,8 @@ export const addNewGrade = async (req, res) => {
 
 
 
-
+//get all grades from the grades collection
+//this will return all grades with their corresponding student and course details
 export const fetchGrades = async (req, res) => {
   try {
     const grades = await Grade.find();
