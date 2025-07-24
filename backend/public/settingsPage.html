@@ -1,32 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Settings</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="dashboard-container">
-    <!--settings page navbar for teacher dahsboard-->
-    <aside class="sidebar">
-      <div class="logo">sams.</div>
-      <nav>
-        <a href="/teacherDashboard.html"><i class="fa-solid fa-table-columns"></i><span>Dashboard</span></a>
-        <a href="/analyticsPage.html"><i class="fa-solid fa-chart-line"></i><span>Analysis</span></a>
-        <a href="/settingsPage.html" class="active"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
-      </nav>
-    </aside>
-    <main class="main-content-dashboard">
-      <!--settings page form for teacher dahsboard-->
-      <section class="settings-card">
-        <h2>Account Settings</h2>
-        <div id="teacher-info"></div>
-        <button id="logout-btn" class="logout-btn">Logout</button>
-      </section>
-    </main>
-  </div>
-  <script type="module" src="settingsPage.js"></script>
-</body>
-</html> 
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!--settings page navbar for teacher dahsboard-->
+      <aside class="sidebar">
+        <div class="logo">sams.</div>
+        <nav>
+          <a href="/teacherDashboard.html"
+            ><i class="fa-solid fa-table-columns"></i><span>Dashboard</span></a
+          >
+          <a href="/analyticsPage.html"
+            ><i class="fa-solid fa-chart-line"></i><span>Analysis</span></a
+          >
+          <a href="/settingsPage.html" class="active"
+            ><i class="fa-solid fa-gear"></i><span>Settings</span></a
+          >
+        </nav>
+      </aside>
+      <main class="main-content-dashboard">
+        <!--settings page form for teacher dahsboard-->
+        <section class="settings-card">
+          <h2>Account Settings</h2>
+          <div id="teacher-info"></div>
+          <button id="logout-btn" class="logout-btn">Logout</button>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="settingsPage.js"></script>
+  </body>
+</html>

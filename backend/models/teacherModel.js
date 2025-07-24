@@ -3,11 +3,11 @@ import mongoose from "mongoose";
 // This schema includes fields for teacher email, password, name, and an array of courses
 // The Courses field is an array of ObjectIds that reference the Course model
 const teacherSchema = new mongoose.Schema({
-    Email: {
+  Email: {
     type: String,
     required: true,
     unique: true,
-    lowercase: true
+    lowercase: true,
   },
   Password: {
     type: String,
@@ -15,11 +15,10 @@ const teacherSchema = new mongoose.Schema({
   },
   Teacher_Name: {
     type: String,
-    required: true
+    required: true,
   },
-  Courses:
-    [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
+  Courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
 });
 // Export the Teacher model based on the teacher schema
 // This model will be used to interact with the "teachers" collection in the database
-export default  mongoose.model("Teacher", teacherSchema);
+export default mongoose.model("Teacher", teacherSchema);

@@ -1,17 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
 
 body {
   background: #eaf6ef; /* Light background for navbar contrast */
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   margin: 0;
   padding: 0;
 }
 
-html, body {
+html,
+body {
   max-width: 100vw;
   overflow-x: hidden;
 }
-.dashboard-container, .main-content-dashboard {
+.dashboard-container,
+.main-content-dashboard {
   max-width: 100vw;
   overflow-x: hidden;
 }
@@ -53,101 +55,102 @@ html, body {
   margin-top: 40px;
 }
 
-    .dashboard-container {
-      display: flex;
-      min-height: 100vh;
-      flex-direction: column;
-      overflow: visible;
-    }
-    .sidebar {
-      background: #232b3b;
-      color: #fff;
-      width: 96vw;
-      margin: 0 auto;
-      height: 90px;
-      min-width: 160px;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between; 
-      padding: 0 40px;
-      position: fixed;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      border-bottom-right-radius: 48px; 
-        border-bottom-left-radius: 48px;
-      z-index: 1000;
-      box-shadow: 0 4px 16px rgba(44,62,80,0.07); 
-    }
-    .sidebar .logo {
-      font-size: 2rem;
-      font-weight: 700;
-      margin-right: 48px;
-      letter-spacing: 1px;
-      margin-left: 0;
-    }
-    .sidebar nav {
-      display: flex;
-      flex-direction: row;
-      gap: 40px;
-      align-items: center;
-      margin-left: auto; 
-    }
-    .sidebar nav a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 1.2rem;
-      opacity: 0.7;
-      transition: opacity 0.2s, color 0.2s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      padding: 8px 12px;
-      border-radius: 8px;
-    }
-    .sidebar nav a.active, .sidebar nav a:hover {
-      opacity: 1;
-      background: rgba(255,255,255,0.08);
-    }
-    .sidebar nav span {
-      font-size: 0.8rem;
-      margin-top: 0px;
-    }
-     .welcome-card {
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 2px 12px rgba(44,62,80,0.06);
-      padding: 32px 32px 0 32px;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      max-height: 170px;
-      gap: 32px;
-      overflow: visible;
-    }
-    .welcome-text {
-      flex: 1;
-    }
-    .welcome-text h2 {
-      font-size: 2rem;
-      font-weight: 600;
-      margin: 0 0 12px 0;
-    }
-    .welcome-text .highlight {
-      color: #2e6a4a;
-      font-weight: 700;
-    }
-    .welcome-text .progress-summary {
-      color: #888;
-      font-size: 1.1rem;
-      margin-bottom: 8px;
-    }
-    .welcome-text .progress-good {
-      color: #ff5e5e;
-      font-weight: 600;
-    }
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  overflow: visible;
+}
+.sidebar {
+  background: #232b3b;
+  color: #fff;
+  width: 96vw;
+  margin: 0 auto;
+  height: 90px;
+  min-width: 160px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom-right-radius: 48px;
+  border-bottom-left-radius: 48px;
+  z-index: 1000;
+  box-shadow: 0 4px 16px rgba(44, 62, 80, 0.07);
+}
+.sidebar .logo {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-right: 48px;
+  letter-spacing: 1px;
+  margin-left: 0;
+}
+.sidebar nav {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  align-items: center;
+  margin-left: auto;
+}
+.sidebar nav a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  opacity: 0.7;
+  transition: opacity 0.2s, color 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+.sidebar nav a.active,
+.sidebar nav a:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.08);
+}
+.sidebar nav span {
+  font-size: 0.8rem;
+  margin-top: 0px;
+}
+.welcome-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.06);
+  padding: 32px 32px 0 32px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  max-height: 170px;
+  gap: 32px;
+  overflow: visible;
+}
+.welcome-text {
+  flex: 1;
+}
+.welcome-text h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+}
+.welcome-text .highlight {
+  color: #2e6a4a;
+  font-weight: 700;
+}
+.welcome-text .progress-summary {
+  color: #888;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+.welcome-text .progress-good {
+  color: #ff5e5e;
+  font-weight: 600;
+}
 .welcome-illustration {
   position: relative;
   right: -100px;
@@ -160,52 +163,70 @@ html, body {
   margin-bottom: 100px;
 }
 .main-content-dashboard {
-  margin-top: 100px; 
+  margin-top: 100px;
   padding: 32px;
 }
 
+.resources-list {
+  margin-top: 0;
+  margin-left: 0 !important;
+  margin-right: 24px;
+  width: 100%;
+  max-width: 900px;
+  min-width: 600px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.06);
+  padding: 14px 0;
+}
+.resource-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 24px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 1rem;
+}
+.resource-row:last-child {
+  border-bottom: none;
+}
+.resource-badge {
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 8px;
+  padding: 4px 12px;
+  margin-right: 8px;
+  color: #fff;
+  display: inline-block;
+}
+.badge-a1 {
+  background: #ffe29a;
+  color: #b48a00;
+}
+.resource-title {
+  flex: 1;
+  font-weight: 500;
+}
+.resource-file {
+  color: #888;
+  font-size: 0.95rem;
+  margin-right: 12px;
+}
+.resource-status {
+  font-size: 0.95rem;
+  margin-right: 12px;
+}
+.resource-members {
+  color: #888;
+  font-size: 0.95rem;
+  margin-right: 12px;
+}
+.resource-size {
+  color: #888;
+  font-size: 0.95rem;
+}
 
-    .resources-list {
-      margin-top: 0;
-      margin-left: 0 !important;
-      margin-right: 24px;
-      width: 100%;
-      max-width: 900px;
-      min-width: 600px;
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 2px 12px rgba(44,62,80,0.06);
-      padding: 14px 0;
-    }
-    .resource-row {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 12px 24px;
-      border-bottom: 1px solid #f0f0f0;
-      font-size: 1rem;
-    }
-    .resource-row:last-child {
-      border-bottom: none;
-    }
-    .resource-badge {
-      font-weight: 700;
-      font-size: 1rem;
-      border-radius: 8px;
-      padding: 4px 12px;
-      margin-right: 8px;
-      color: #fff;
-      display: inline-block;
-    }
-    .badge-a1 { background: #ffe29a; color: #b48a00; }
-    .resource-title { flex: 1; font-weight: 500; }
-    .resource-file { color: #888; font-size: 0.95rem; margin-right: 12px; }
-    .resource-status { font-size: 0.95rem; margin-right: 12px; }
-    .resource-members { color: #888; font-size: 0.95rem; margin-right: 12px; }
-    .resource-size { color: #888; font-size: 0.95rem; }
-
-
-  .course-header {
+.course-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -220,33 +241,33 @@ html, body {
   align-items: center;
   gap: 6px;
 }
- .resource-btn {
-      background: #f9deff;
-      color: #e83dff;
-      border-radius: 8px;
-      padding: 8px 24px;
-      font-weight: 600;
-      text-decoration: none;
-      font-size: 0.rem;
-      border: none;
-      transition: background 0.2s, transform 0.2s;
-    }
-    #calendar-card {
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 2px 12px rgba(44,62,80,0.06);
-      padding: 24px;
-      margin-bottom: 16px;
-    }
-        .rightbar {
-      width: 320px;
-      min-width: 320px;
-      background: none;
-      padding: 40px 24px 0 0;
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
-    }
+.resource-btn {
+  background: #f9deff;
+  color: #e83dff;
+  border-radius: 8px;
+  padding: 8px 24px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0rem;
+  border: none;
+  transition: background 0.2s, transform 0.2s;
+}
+#calendar-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.06);
+  padding: 24px;
+  margin-bottom: 16px;
+}
+.rightbar {
+  width: 320px;
+  min-width: 320px;
+  background: none;
+  padding: 40px 24px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
 
 .course-section-title {
   margin-top: 0;
@@ -273,7 +294,7 @@ html, body {
   max-width: 480px;
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(44,62,80,0.06);
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.06);
   padding: 24px 24px 16px 24px;
 }
 .course-title {
@@ -329,7 +350,7 @@ html, body {
   height: 260px;
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(44,62,80,0.06);
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.06);
   padding: 18px 24px 0 24px;
   display: flex;
   flex-direction: column;
@@ -348,7 +369,7 @@ html, body {
 .calendar-card {
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(44,62,80,0.06);
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.06);
   padding: 24px;
   margin-bottom: 16px;
   width: 100%;
@@ -360,7 +381,7 @@ html, body {
 .left-vertical-container {
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(44,62,80,0.06);
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.06);
   width: 20%;
   min-height: 500px;
   margin-top: 24px;
@@ -373,7 +394,7 @@ html, body {
   margin: 48px auto 0 auto;
   background: #fff;
   border-radius: 18px;
-  box-shadow: 0 2px 12px rgba(44,62,80,0.06);
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.06);
   padding: 36px 40px 32px 40px;
   display: flex;
   flex-direction: column;
@@ -412,7 +433,9 @@ html, body {
   color: #222;
   font-weight: 500;
 }
-.settings-edit-btn, .settings-save-btn, .settings-cancel-btn {
+.settings-edit-btn,
+.settings-save-btn,
+.settings-cancel-btn {
   background: none;
   border: none;
   outline: none;
@@ -455,18 +478,18 @@ html, body {
   font-weight: 600;
   cursor: pointer;
   transition: background 0.18s;
-  box-shadow: 0 2px 8px rgba(44,62,80,0.04);
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.04);
 }
 .logout-btn:hover {
   background: #d13c3c;
 }
 #gpa-line-chart-container {
- transform: translate(-160px, -600px); 
+  transform: translate(-160px, -600px);
   margin: 32px auto 0 auto;
   width: 40%;
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(44,62,80,0.06);
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.06);
   padding: 24px 32px;
 }
 .gpa-line-chart-title {

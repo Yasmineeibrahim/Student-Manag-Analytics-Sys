@@ -1,61 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sams portal.</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="main-wrapper">
-    <div class="main-left">
-      <div class="navbar">
-        <span class="logo">sams.</span>
-        <nav>
-        </nav>
+  <head>
+    <meta charset="UTF-8" />
+    <script
+      src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js"
+      type="module"
+    ></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>sams portal.</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <div class="main-left">
+        <div class="navbar">
+          <span class="logo">sams.</span>
+          <nav></nav>
+        </div>
+        <!--welcome hero text-->
+        <div class="main-content">
+          <h1 class="headline">
+            Welcome, Student.<br />Your journey starts here.
+          </h1>
+          <p class="subheadline">
+            Access your courses, track your progress, and connect with your
+            campus — all in one place.
+          </p>
+          <!--login form that sends the email and password to the /api/studentLogin endpoint-->
+          <form
+            id="student-login-form"
+            action="/api/studentLogin"
+            method="POST"
+          >
+            <div class="login-form">
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Enter your password"
+                  required
+                />
+              </div>
+              <button type="submit" class="login-btn">Login</button>
+            </div>
+          </form>
+        </div>
       </div>
-      <!--welcome hero text-->
-      <div class="main-content">
-        <h1 class="headline">Welcome, Student.<br>Your journey starts here.</h1>
-        <p class="subheadline">Access your courses, track your progress, and connect with your campus — all in one place.</p>
-        <!--login form that sends the email and password to the /api/studentLogin endpoint-->
-        <form id="student-login-form" action="/api/studentLogin" method="POST">
-          <div class="login-form">
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" name="email" placeholder="Enter your email" required />
-            </div>
-            <div class="form-group">
-              <label for="password">Password</label>
-              <input type="password" id="password" name="password" placeholder="Enter your password" required />
-            </div>
-            <button type="submit" class="login-btn">Login</button>
-          </div>
-        </form>
-
+      <div class="main-right">
+        <div class="main-right-header">
+          <!--top navbar links between teacher and students-->
+          <a href="#" class="student-link">Student</a>
+          <a href="teacherLogin.html" class="teacher-btn" target="_self"
+            >Teacher</a
+          >
+        </div>
+        <div class="illustration">
+          <!--Lottie anamiation embedd-->
+          <dotlottie-wc
+            class="student-illustration"
+            src="https://lottie.host/848179e2-c45e-45c0-bce7-ea5d91165631/MjY1FfNOa3.lottie"
+            style="width: 540px; height: 540px"
+            speed="1"
+            autoplay
+            loop
+          ></dotlottie-wc>
+        </div>
       </div>
     </div>
-    <div class="main-right">
-
-      <div class="main-right-header">
-        <!--top navbar links between teacher and students-->
-        <a href="#" class="student-link">Student</a>
-        <a href="teacherLogin.html" class="teacher-btn" target="_self">Teacher</a>
-      </div>
-      <div class="illustration">
-        <!--Lottie anamiation embedd-->
-        <dotlottie-wc class="student-illustration"
-  src="https://lottie.host/848179e2-c45e-45c0-bce7-ea5d91165631/MjY1FfNOa3.lottie"
-  style="width: 540px;height: 540px"
-  speed="1"
-  autoplay
-  loop
-></dotlottie-wc>
-      </div>
-    </div>
-  </div>
-
-</body>
-<script src="app.js"></script>
+  </body>
+  <script src="app.js"></script>
 </html>

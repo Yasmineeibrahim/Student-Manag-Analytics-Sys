@@ -19,13 +19,15 @@
   <body>
     <div class="dashboard-container">
       <aside class="sidebar">
-          <!--student dashboard top navbar and its elements-->
+        <!--student dashboard top navbar and its elements-->
         <div class="logo">sams.</div>
         <nav>
           <a href="" class="active"
             ><i class="fa-solid fa-table-columns"></i><span>Dashboard</span></a
           >
-          <a href="/studentSettings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
+          <a href="/studentSettings.html"
+            ><i class="fa-solid fa-gear"></i><span>Settings</span></a
+          >
         </nav>
       </aside>
       <main class="main-content-dashboard">
@@ -67,7 +69,7 @@
           <div class="my-courses-label">My Courses</div>
         </div>
         <div class="dashboard-courses-row">
-          <div style="display: flex; flex-direction: column; flex: 1;">
+          <div style="display: flex; flex-direction: column; flex: 1">
             <!--courses list container-->
             <div class="resources-list">
               <!--this is where the courses will be displayed-->
@@ -79,7 +81,9 @@
           <div class="dashboard-right-col">
             <!--courses bar chart container-->
             <div id="courses-bar-chart-container">
-              <div class="courses-bar-chart-title">Course Grades Comparison</div>
+              <div class="courses-bar-chart-title">
+                Course Grades Comparison
+              </div>
               <!--Canvas for bar chart needed for chart.js-->
               <canvas id="courses-bar-chart"></canvas>
             </div>
@@ -88,7 +92,13 @@
               <!--google calender embed-->
               <iframe
                 src="https://calendar.google.com/calendar/embed?src=d418ad8fbc6d09a1569460010669c104f53a12395dcb67f841426d09efd3d7ed%40group.calendar.google.com&ctz=Asia%2FDubai"
-                style="border:0; width:100%; height:320px; border-radius:12px; background:#fff;"
+                style="
+                  border: 0;
+                  width: 100%;
+                  height: 320px;
+                  border-radius: 12px;
+                  background: #fff;
+                "
                 frameborder="0"
                 scrolling="no"
               ></iframe>

@@ -5,19 +5,19 @@ import mongoose from "mongoose";
 const gradeSchema = new mongoose.Schema({
   Student: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Student',
-    required: true
+    ref: "Student",
+    required: true,
   },
   Course: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Course',
-    required: true
+    ref: "Course",
+    required: true,
   },
   Grade: {
     type: String,
     required: true,
-    enum: ['A', 'B', 'C', 'D', 'F']
-  }
+    enum: ["A", "B", "C", "D", "F"],
+  },
 });
 // Export the Grade model based on the grade schema
 // This model will be used to interact with the "grades" collection in the database
