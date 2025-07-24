@@ -1,3 +1,5 @@
+// Student Dashboard JS
+// Handles loading student data, rendering course and GPA charts, and displaying student rank.
 document.addEventListener('DOMContentLoaded', function() {
   const studentGPA = localStorage.getItem('studentGPA');
   if (studentGPA) {
@@ -29,12 +31,18 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-
-
+/**
+ * Extracts the course ID from the current page URL.
+ * @returns {string|null} The course ID if present, otherwise null.
+ */
 function getCourseIdFromUrl() {
   const params = new URLSearchParams(window.location.search);
   return params.get('id');
 }
+/**
+ * Loads and displays details for a specific course, including classmates and the student's grade.
+ * Fetches course and grade data from the backend and updates the DOM.
+ */
 async function loadCourseDetails() {
   const courseId = getCourseIdFromUrl();
   if (!courseId) {
@@ -99,6 +107,12 @@ async function loadCourseDetails() {
 
 window.addEventListener('DOMContentLoaded', loadCourseDetails);
 
+/**
+ * Renders a bar chart comparing the student's grades across their courses.
+ * @param {Array} courses - List of course objects.
+ * @param {Array} grades - List of grade objects.
+ * @param {string} studentId - The current student's ID.
+ */
 function renderCoursesBarChart(courses, grades, studentId) {
   const courseNames = courses.map(c => c.Course_Name || c.Course_Code || 'Course');
   const courseIds = courses.map(c => c._id);
@@ -150,6 +164,10 @@ function renderCoursesBarChart(courses, grades, studentId) {
   });
 }
 
+/**
+ * Calculates and displays the student's rank within their grade cohort.
+ * Fetches all students, filters by grade, sorts by GPA, and determines rank.
+ */
 async function showStudentRank() {
   const studentId = localStorage.getItem('studentId');
   let studentGPA = parseFloat(localStorage.getItem('studentGPA'));
@@ -229,6 +247,10 @@ document.addEventListener('DOMContentLoaded', async function() {
   }
 }); 
 
+/**
+ * Renders a line chart showing the student's GPA history over time.
+ * @param {string} studentId - The current student's ID.
+ */
 async function renderGpaLineChart(studentId) {
   if (!studentId) return;
   try {

@@ -1,3 +1,5 @@
+// Teacher Charts JS
+// Handles loading teacher's courses, GPA analytics, and rendering charts for teacher dashboard.
 (async function () {
   const teacherName = localStorage.getItem('teacherName');
   if (teacherName) {
@@ -111,6 +113,12 @@
     if (!res.ok) throw new Error('Failed to fetch courses');
     const { studentsWithAvg } = await res.json();
 
+    /**
+     * Helper to get a random subset of n elements from an array.
+     * @param {Array} arr - The array to sample from.
+     * @param {number} n - Number of elements to select.
+     * @returns {Array} Randomly selected elements.
+     */
     function getRandom(arr, n) {
       const result = [];
       const taken = new Set();
@@ -129,6 +137,11 @@
     const barLabels = random5.map(s => s.name);
     const barData = random5.map(s => s.avgGrade);
 
+    /**
+     * Converts a numeric grade to a letter grade (A-F).
+     * @param {number} grade - Numeric grade (0-4 scale).
+     * @returns {string} Letter grade.
+     */
     function gradeToLetter(grade) {
       if (grade >= 3.5) return 'A';
       if (grade >= 2.5) return 'B';

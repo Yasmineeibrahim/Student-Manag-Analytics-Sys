@@ -9,15 +9,17 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="studentstyle.css" />
+    <!--lottiefiles animation import script-->
     <script
       src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js"
       type="module"
     ></script>
-    <title>Document</title>
+    <title>sams.</title>
   </head>
   <body>
     <div class="dashboard-container">
       <aside class="sidebar">
+          <!--student dashboard top navbar and its elements-->
         <div class="logo">sams.</div>
         <nav>
           <a href="" class="active"
@@ -27,7 +29,9 @@
         </nav>
       </aside>
       <main class="main-content-dashboard">
+        <!--welcome card for student dashboard-->
         <section class="welcome-card">
+          <!--container for welcome text and illustration-->
           <div class="welcome-text">
             <h2>
               Welcome Back, <span class="highlight" id="studentName"></span
@@ -45,6 +49,8 @@
               Progress is <span style="color: #ff5e5e">very good!</span>
             </div>
           </div>
+          <!--lottie animation for welcome card-->
+          <!--this animation is a lottie file that is imported from lottiefiles-->
           <div class="welcome-illustration">
             <dotlottie-wc
               src="https://lottie.host/22508d9d-955d-47fd-a4fb-1148f678d20f/EnV4EXsc5l.lottie"
@@ -55,22 +61,31 @@
             ></dotlottie-wc>
           </div>
         </section>
+        <!--courses container-->
         <div class="course-header">
+          <!--header for courses list-->
           <div class="my-courses-label">My Courses</div>
         </div>
         <div class="dashboard-courses-row">
           <div style="display: flex; flex-direction: column; flex: 1;">
+            <!--courses list container-->
             <div class="resources-list">
+              <!--this is where the courses will be displayed-->
+              <!-- Each course will be displayed as a resource row -->
               <div class="resource-row"></div>
             </div>
             <div class="left-vertical-container"></div>
           </div>
           <div class="dashboard-right-col">
+            <!--courses bar chart container-->
             <div id="courses-bar-chart-container">
               <div class="courses-bar-chart-title">Course Grades Comparison</div>
+              <!--Canvas for bar chart needed for chart.js-->
               <canvas id="courses-bar-chart"></canvas>
             </div>
+            <!--card for calender in the right column-->
             <div class="calendar-card">
+              <!--google calender embed-->
               <iframe
                 src="https://calendar.google.com/calendar/embed?src=d418ad8fbc6d09a1569460010669c104f53a12395dcb67f841426d09efd3d7ed%40group.calendar.google.com&ctz=Asia%2FDubai"
                 style="border:0; width:100%; height:320px; border-radius:12px; background:#fff;"
@@ -81,14 +96,17 @@
           </div>
         </div>
       </main>
+      <!--line chart container that displays gpa progress-->
       <div id="gpa-line-chart-container">
         <div class="gpa-line-chart-title">GPA Progress Over Time</div>
         <canvas id="gpa-line-chart" height="120"></canvas>
       </div>
     </div>
+    <!--embedd script for chart.js-->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="studentDashboard.js"></script>
     <script>
+      // Fetch the student name from localStorage and display it
       const studentName = localStorage.getItem("studentName");
       if (studentName) {
         document.getElementById("studentName").textContent = studentName;

@@ -1,11 +1,15 @@
+//handle teacher login 
+//get teacher login form from teacherLogin.html
 const teacherForm = document.getElementById('teacher-login-form');
 if (teacherForm) {
+  //add event listener for the submit event and collect email and password
   teacherForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
 
     try {
+      //send a POST request to the /api/teacherLogin endpoint with the email and password
       const res = await fetch('/api/teacherLogin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -13,7 +17,7 @@ if (teacherForm) {
       });
 
       const data = await res.json();
-
+      //if the response is ok, store the teacher id and name in localStorage and redirect to teacherDashboard.html
       if (res.ok) {
         if (data.teacher && data.teacher._id) {
           localStorage.setItem('teacherId', data.teacher._id);
@@ -30,15 +34,18 @@ if (teacherForm) {
     }
   });
 }
-
+//handle student login
+//get student login form from studentLogin.html
 const studentForm = document.getElementById('student-login-form');
 if (studentForm) {
+  //add event listener for the submit event and collect email and password
   studentForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
 
     try {
+      //send a POST request to the /api/studentLogin endpoint with the email and password
       const res = await fetch('/api/studentLogin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -46,7 +53,7 @@ if (studentForm) {
       });
 
       const data = await res.json();
-
+      //if the response is ok, store the student id and name in localStorage and redirect to studentDashboard.html
       if (res.ok) {
         if (data.student && data.student._id) {
           localStorage.setItem('studentId', data.student._id);

@@ -15,6 +15,7 @@
 </head>
 <body>
   <div class="dashboard-container">
+    <!-- left side nav bar and its elements -->
     <aside class="sidebar">
       <div class="logo">sams.</div>
       <nav>
@@ -25,15 +26,18 @@
     </aside>
         <main class="main-content-dashboard">
       <section class="analytics-card">
+        <!-- bar chart for all students enrolled in the teachers courses -->
         <h2>All Students Grades Bar Chart</h2>
         <canvas id="all-students-bar-chart" height="400"></canvas>
       </section>
       <div class="analytics-row">
         <section class="analytics-card half-width">
+          <!--donught graph showing grade distribution for the courses teached-->
           <h2>Grade Distribution</h2>
           <canvas id="grade-donut-chart" height="320"></canvas>
         </section>
         <section class="analytics-card half-width">
+          <!-- line chart showing the changes overtime of the teachers student average gpas -->
           <h2 class="line-chart">Performance Over Time</h2>
           <canvas id="performance-line-chart" height="320"></canvas>
         </section>

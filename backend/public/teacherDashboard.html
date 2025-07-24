@@ -4,18 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Teacher Dashboard</title>
+  <!--import font awesome-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" />
   <link rel="stylesheet" href="style.css" />
+  <!--import lottie animation-->
   <script
   src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js"
   type="module"
 ></script>
+  <!--import chart.js for charts-->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
 <body>
   <div class="dashboard-container">
     <aside class="sidebar">
+      <!--sidebar for the teacher dashboard-->
       <div class="logo">sams.</div>
       <nav>
         <a href="/teacherDashboard.html" class="active"><i class="fa-solid fa-table-columns"></i><span>Dashboard</span></a>
@@ -23,7 +27,10 @@
         <a href="/settingsPage.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
       </nav>
     </aside>
-        <main class="main-content-dashboard">      <section class="welcome-card">
+    <!--main content for the teacher dashboard-->
+        <main class="main-content-dashboard">  
+      <!--welcome card with teacher name and progress summary-->   
+           <section class="welcome-card">
         <div class="welcome-text">
           <h2>Welcome Back, <span class="highlight" id="teacherName"></span></h2>
           <div class="progress-summary">
@@ -32,6 +39,7 @@
 </div>
           <div class="progress-good">Progress is <span style="color:#ff5e5e;">very good!</span></div>
         </div>
+        <!--lottie animation for welcome card-->
         <div class="welcome-illustration">
         <dotlottie-wc
             src="https://lottie.host/262b551a-5181-4189-8939-ef9450947ab4/3VOIRdN55F.lottie"
@@ -42,16 +50,19 @@
         </div>
       </section>
       <div class="dashboard-row">
+        <!--Canvas for the student bar chart-->
         <section class="students-card">
           <h3>My Students <a href="/analyticsPage.html" style="float:right;font-weight:400;font-size:0.95rem;color:#888;" >View all</a></h3>
           <div class="students-list"><canvas id="students-list"></canvas>
           </div>
         </section>
+        <!--Canvas for the course bar chart-->
         <section class="gpa-card">
           <h3>GPA Statistics<span style="float:right;font-weight:400;font-size:0.95rem;color:#888;">2025</span></h3>
             <div class="gpa-list"><canvas id="average-gpas"></canvas>
         </section>
       </div>
+      <!--courses header and add course button-->
       <div class="course-header">
   <div class="my-courses-label">My Courses</div>
   <div class="add-course">
@@ -59,7 +70,7 @@
     <span>Add New Course</span>
   </div>
 </div>
-
+      <!--Courses list-->
       <div class="resources-list">
         <div class="resource-row">
           <button class="course-delete-btn" aria-label="Delete"><i class="fa-solid fa-trash" style="color: #a82929;"></i></button>
@@ -79,10 +90,14 @@
     </form>
   </div>
 </div>
+  <!--right sidebar for calendar and top students-->
     <aside class="rightbar">
+      <!--card for calender-->
       <div class="calendar-card">
+        <!--google calender embedd-->
         <iframe src="https://calendar.google.com/calendar/embed?src=d418ad8fbc6d09a1569460010669c104f53a12395dcb67f841426d09efd3d7ed%40group.calendar.google.com&ctz=Asia%2FDubai" style="border: 0;max-width: 300px; max-height: 300px; width: 100%; height: 600px;" frameborder="0" scrolling="no"></iframe>
       </div>
+      <!--card for top students-->
       <div class="Top-card">
         <h4 style="margin:0 0 12px 0;font-size:1.1rem;font-weight:600;">Top Students</h4>
         <div class="Top-list">
@@ -108,6 +123,7 @@
     </aside>
   </div>
   <script>
+  // Fetch the teacher name from localStorage and display it
   const teacherName = localStorage.getItem('teacherName');
   if (teacherName) {
     document.getElementById('teacherName').textContent = teacherName;

@@ -1,8 +1,21 @@
+// Teacher Course JS
+// Handles loading and managing a single course, including enrolled students and course updates.
 
+/**
+ * Extracts the course ID from the current page URL.
+ * @returns {string|null} The course ID if present, otherwise null.
+ */
 function getCourseIdFromUrl() {
   const params = new URLSearchParams(window.location.search);
   return params.get('id');
 }
+
+/**
+ * Loads and displays details for a specific course, including enrolled students.
+ * Handles updating course info, adding/removing/updating students, and grade management.
+ * Attaches event listeners for course and student actions.
+ * @returns {Promise<void>}
+ */
 async function loadCourseDetails() {
   const courseId = getCourseIdFromUrl();
   if (!courseId) {
@@ -267,4 +280,5 @@ async function loadCourseDetails() {
   }
 }
 
+// Attach loadCourseDetails to DOMContentLoaded event
 window.addEventListener('DOMContentLoaded', loadCourseDetails); 
