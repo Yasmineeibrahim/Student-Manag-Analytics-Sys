@@ -1,19 +1,111 @@
 // Student Dashboard JS
 // Handles loading student data, rendering course and GPA charts, and displaying student rank.
 document.addEventListener("DOMContentLoaded", function () {
+  // Update student GPA display
   const studentGPA = localStorage.getItem("studentGPA");
-  if (studentGPA) {
-    document.getElementById("student-gpa").textContent = studentGPA;
+  const gpaElement = document.getElementById("student-gpa");
+  if (studentGPA && gpaElement) {
+    gpaElement.textContent = studentGPA;
+  }
+
+  // Update student name display
+  const studentName = localStorage.getItem("studentName");
+  const nameElement = document.getElementById("studentName");
+  if (studentName && nameElement) {
+    nameElement.textContent = studentName;
   }
 
   const studentId = localStorage.getItem("studentId");
+  const token = localStorage.getItem("token");
   const lessonsList = document.querySelector(".resources-list");
+
+  // Helper function to make authenticated requests
+  async function fetchWithAuth(url, options = {}) {
+    if (!token) {
+      window.location.href = "/studentLogin.html";
+      return;
+    }
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`,
+      ...(options.headers || {})
+    };
+    return fetch(url, { ...options, headers });
+  }
+
+  // Function to show student rank
+  async function showStudentRank() {
+    try {
+      const [studentRes, peersRes] = await Promise.all([
+        fetchWithAuth(`/api/students/${studentId}`),
+        fetchWithAuth("/api/students/fetchstudents")
+      ]);
+
+      if (!studentRes.ok || !peersRes.ok) {
+        throw new Error("Failed to fetch student data");
+      }
+
+      const student = await studentRes.json();
+      const peers = await peersRes.json();
+
+      // Filter peers in the same grade and sort by GPA
+      const sameGradePeers = peers
+        .filter(p => p.Grade === student.Grade)
+        .sort((a, b) => b.GPA - a.GPA);
+
+      // Find student's rank
+      const rank = sameGradePeers.findIndex(p => p._id === studentId) + 1;
+
+      const container = document.querySelector(".left-vertical-container");
+      if (container) {
+        container.innerHTML = `
+          <div style="padding:32px; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; height:100%;">
+            <dotlottie-wc
+              src="https://lottie.host/40337ab6-145b-421e-809f-ec95ff83c7bd/J2sqHYvbip.lottie"
+              style="width: 180px; height: 180px; margin-bottom: 16px;"
+              speed="1"
+              autoplay
+              loop
+            ></dotlottie-wc>
+            <div style="font-size:2.5rem; font-weight:700; color:#2e6a4a;">#${rank}</div>
+            <div style="font-size:1.2rem; color:#888;">Your rank in Grade ${student.Grade}</div>
+            <div style="margin-top:12px; font-size:1rem;">Out of ${sameGradePeers.length} students</div>
+          </div>
+        `;
+      }
+    } catch (error) {
+      console.error("Error showing student rank:", error);
+      const container = document.querySelector(".left-vertical-container");
+      if (container) {
+        container.innerHTML = `
+          <div style="padding:32px; text-align:center; color:#ff5e5e;">
+            Unable to load rank information. Please try again later.
+          </div>
+        `;
+      }
+    }
+  }
+
+  // Load and display courses
   if (studentId && lessonsList) {
-    fetch(`/api/students/${studentId}/courses`)
-      .then((res) => res.json())
+    fetchWithAuth(`/api/students/${studentId}/courses`)
+      .then((res) => {
+        if (!res.ok) {
+          if (res.status === 401) {
+            window.location.href = "/studentLogin.html";
+            throw new Error("Unauthorized");
+          }
+          throw new Error("Failed to fetch courses");
+        }
+        return res.json();
+      })
       .then((data) => {
         lessonsList.innerHTML = "";
-        (data.courses || []).forEach((course) => {
+        if (!data.courses || data.courses.length === 0) {
+          lessonsList.innerHTML = '<div class="resource-row"><span class="resource-title" style="color: #888;">No courses enrolled.</span></div>';
+          return;
+        }
+        data.courses.forEach((course) => {
           const div = document.createElement("div");
           div.classList.add("resource-row");
           div.innerHTML = `
@@ -32,403 +124,154 @@ document.addEventListener("DOMContentLoaded", function () {
           `;
           lessonsList.appendChild(div);
         });
+
+        // After loading courses, fetch grades and render charts
+        return Promise.all([
+          Promise.resolve(data.courses),
+          fetchWithAuth("/api/grades/fetchgrades").then(res => res.json())
+        ]);
+      })
+      .then(([courses, grades]) => {
+        renderCoursesBarChart(courses, grades, studentId);
       })
       .catch((err) => {
+        console.error("Error loading courses:", err);
         lessonsList.innerHTML =
-          '<div style="color:red">Failed to load courses.</div>';
+          '<div class="resource-row"><span class="resource-title" style="color: #ff5e5e;">Failed to load courses. Please try again.</span></div>';
       });
   }
-});
 
-/**
- * Extracts the course ID from the current page URL.
- * @returns {string|null} The course ID if present, otherwise null.
- */
-function getCourseIdFromUrl() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get("id");
-}
-/**
- * Loads and displays details for a specific course, including classmates and the student's grade.
- * Fetches course and grade data from the backend and updates the DOM.
- */
-async function loadCourseDetails() {
-  const courseId = getCourseIdFromUrl();
-  if (!courseId) {
-    document.getElementById("course-details").textContent =
-      "No course ID provided.";
-    return;
-  }
-  try {
-    const res = await fetch(`/api/courses/${courseId}`);
-    if (!res.ok) throw new Error("Failed to fetch course");
-    const course = await res.json();
-    if (!course) {
-      document.getElementById("course-details").textContent =
-        "Course not found.";
+  // Function to render the courses bar chart
+  function renderCoursesBarChart(courses, grades, studentId) {
+    const courseNames = courses.map(c => c.Course_Name || c.Course_Code || "Course");
+    const courseIds = courses.map(c => c._id);
+    const courseGrades = courseIds.map(cid => {
+      const gradeDoc = grades.find(g => g.Student === studentId && g.Course === cid);
+      return gradeDoc ? gradeDoc.Grade : null;
+    });
+
+    const gradeMap = { A: 4, B: 3, C: 2, D: 1, F: 0 };
+    const chartGrades = courseGrades.map(g => gradeMap[g] !== undefined ? gradeMap[g] : null);
+
+    const canvas = document.getElementById("courses-bar-chart");
+    if (!canvas) {
+      console.error("Courses bar chart canvas not found");
       return;
     }
-    let studentGrade = "-";
-    try {
-      const studentId = localStorage.getItem("studentId");
-      const gradesRes = await fetch("/api/grades/fetchgrades");
-      if (gradesRes.ok) {
-        const grades = await gradesRes.json();
-        console.log(
-          "Grades:",
-          grades,
-          "Student:",
-          studentId,
-          "Course:",
-          course._id
-        );
-        const gradeDoc = grades.find(
-          (g) => g.Student === studentId && g.Course === course._id
-        );
-        console.log("Found gradeDoc:", gradeDoc);
-        if (gradeDoc && gradeDoc.Grade) {
-          studentGrade = gradeDoc.Grade;
-        }
-      }
-    } catch (e) {
-      console.error(e);
-    }
-    document.getElementById("course-details").innerHTML = `
-      <div class="course-students-flex">
-        <div class="students-list-section">
-          <h3 class="course-section-title">
-            <span>Classmates.</span>
-          </h3>
-          ${
-            Array.isArray(course.Students) && course.Students.length > 0
-              ? `<div class='resources-list'>${course.Students.map(
-                  (s) => `
-                <div class="resource-row">
-                  <span class="resource-badge badge-a1">${
-                    s.Student_Name
-                      ? s.Student_Name.charAt(0).toUpperCase()
-                      : "?"
-                  }</span>
-                  <span class="resource-title">${s.Student_Name}</span>
-                  <span class="resource-members year">${
-                    s.Year ? `Year: ${s.Year}` : "Year: -"
-                  }</span>
-                </div>`
-                ).join("")}</div>`
-              : '<div class="resources-list"><div class="resource-row"><span class="resource-title course-empty">No students enrolled.</span></div></div>'
-          }
-        </div>
-        <div class="course-details-section">
-          <h2 class="course-title">${course.Course_Name}</h2>
-          <div class="course-teacher" style="font-size:1.1rem; color:#888; margin-bottom:10px;">Instructor: ${
-            course.Instructor || "-"
-          }</div>
-          <div class="course-info-horizontal">
-            <div class="course-meta-horizontal"><span class="course-info-label">Course Code:</span> <span class="course-info-value">${
-              course.Course_Code
-            }</span></div>
-            <div class="course-meta-horizontal"><span class="course-info-label">Credit Hours:</span> <span class="course-info-value">${
-              course.Credit_Hours
-            }</span></div>
-            <div class="course-meta-horizontal"><span class="course-info-label">Number of Students:</span> <span class="course-info-value">${
-              Array.isArray(course.Students) ? course.Students.length : 0
-            }</span></div>
-            <div class="course-meta-horizontal"><span class="course-info-label">Your Grade:</span> <span class="course-info-value">${studentGrade}</span></div>
-          </div>
-        </div>
-      </div>
-    `;
-  } catch (err) {
-    document.getElementById("course-details").textContent =
-      "Error loading course details.";
-  }
-}
 
-window.addEventListener("DOMContentLoaded", function() {
-  if (document.getElementById("course-details")) {
-    loadCourseDetails();
-  }
-});
-
-/**
- * Renders a bar chart comparing the student's grades across their courses.
- * @param {Array} courses - List of course objects.
- * @param {Array} grades - List of grade objects.
- * @param {string} studentId - The current student's ID.
- */
-function renderCoursesBarChart(courses, grades, studentId) {
-  const courseNames = courses.map(
-    (c) => c.Course_Name || c.Course_Code || "Course"
-  );
-  const courseIds = courses.map((c) => c._id);
-  const courseGrades = courseIds.map((cid) => {
-    const gradeDoc = grades.find(
-      (g) => g.Student === studentId && g.Course === cid
-    );
-    return gradeDoc && gradeDoc.Grade ? gradeDoc.Grade : null;
-  });
-  const gradeMap = { A: 4, B: 3, C: 2, D: 1, F: 0 };
-  const chartGrades = courseGrades.map((g) =>
-    gradeMap[g] !== undefined ? gradeMap[g] : null
-  );
-
-  const chartContainer = document.getElementById("courses-bar-chart-container");
-  if (chartContainer)
-    chartContainer.innerHTML =
-      '<div class="courses-bar-chart-title">Course Grades Comparison</div><canvas id="courses-bar-chart"></canvas>';
-
-  const canvas = document.getElementById("courses-bar-chart");
-  if (!canvas) {
-    console.error("Canvas for bar chart not found!");
-    return;
-  }
-  const ctx = canvas.getContext("2d");
-  new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: courseNames,
-      datasets: [
-        {
-          label: "Your Grade",
+    new Chart(canvas, {
+      type: "bar",
+      data: {
+        labels: courseNames,
+        datasets: [{
+          label: "Course Grades",
           data: chartGrades,
           backgroundColor: "#4ecb7a",
           borderRadius: 8,
-        },
-      ],
-    },
-    options: {
-      scales: {
-        y: {
-          min: 0,
-          max: 4,
-          ticks: {
-            stepSize: 1,
-            callback: function (value) {
-              return ["F", "D", "C", "B", "A"][value] || value;
-            },
-          },
-          title: { display: true, text: "Grade" },
-        },
-      },
-      plugins: {
-        legend: { display: false },
-      },
-    },
-  });
-}
-
-/**
- * Calculates and displays the student's rank within their grade cohort.
- * Fetches all students, filters by grade, sorts by GPA, and determines rank.
- */
-async function showStudentRank() {
-  const studentId = localStorage.getItem("studentId");
-  let studentGPA = parseFloat(localStorage.getItem("studentGPA"));
-  let studentGrade = localStorage.getItem("studentGrade");
-
-  if (!studentGrade || isNaN(parseInt(studentGrade))) {
-    if (studentId) {
-      const res = await fetch("/api/students/fetchstudents");
-      if (res.ok) {
-        const allStudents = await res.json();
-        const me = allStudents.find((s) => s._id === studentId);
-        if (me) {
-          studentGrade = me.Grade;
-          studentGPA = me.GPA;
-          localStorage.setItem("studentGrade", studentGrade);
-        }
-      }
-    }
-  } else {
-    studentGrade = parseInt(studentGrade);
-  }
-
-  if (!studentId || isNaN(studentGPA) || isNaN(studentGrade)) return;
-
-  const res = await fetch("/api/students/fetchstudents");
-  if (!res.ok) return;
-  const allStudents = await res.json();
-
-  const sameGrade = allStudents.filter((s) => s.Grade === studentGrade);
-
-  sameGrade.sort((a, b) => b.GPA - a.GPA);
-
-  const rank = sameGrade.findIndex((s) => s._id === studentId) + 1;
-
-  const container = document.querySelector(".left-vertical-container");
-  if (container) {
-    container.innerHTML = `
-      <div style="padding:32px; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; height:100%;">
-        <dotlottie-wc
-          src="https://lottie.host/40337ab6-145b-421e-809f-ec95ff83c7bd/J2sqHYvbip.lottie"
-          style="width: 180px; height: 180px; margin-bottom: 16px;"
-          speed="1"
-          autoplay
-          loop
-        ></dotlottie-wc>
-        <div style="font-size:2.5rem; font-weight:700; color:#2e6a4a;">#${rank}</div>
-        <div style="font-size:1.2rem; color:#888;">Your rank in Grade ${studentGrade}</div>
-        <div style="margin-top:12px; font-size:1rem;">Out of ${sameGrade.length} students</div>
-      </div>
-    `;
-  }
-}
-document.addEventListener("DOMContentLoaded", showStudentRank);
-
-document.addEventListener("DOMContentLoaded", async function () {
-  const studentId = localStorage.getItem("studentId");
-  if (studentId) {
-    const [coursesRes, gradesRes] = await Promise.all([
-      fetch(`/api/students/${studentId}/courses`),
-      fetch("/api/grades/fetchgrades"),
-    ]);
-    const coursesData = await coursesRes.json();
-    const grades = gradesRes.ok ? await gradesRes.json() : [];
-    const courses = coursesData.courses || [];
-    let chartContainer = document.getElementById("courses-bar-chart-container");
-    if (!chartContainer) {
-      chartContainer = document.createElement("div");
-      chartContainer.id = "courses-bar-chart-container";
-      chartContainer.innerHTML =
-        '<div class="courses-bar-chart-title">Course Grades Comparison</div><canvas id="courses-bar-chart"></canvas>';
-      document.querySelector(".dashboard-right-col").prepend(chartContainer);
-    }
-    setTimeout(() => renderCoursesBarChart(courses, grades, studentId), 0);
-  }
-});
-
-/**
- * Renders a bar chart showing the student's GPA history over time (per semester/term).
- * @param {string} studentId - The current student's ID.
- */
-async function renderGpaBarChart(studentId) {
-  console.log("renderGpaBarChart called", studentId);
-  if (!studentId) return;
-  try {
-    const res = await fetch(`/api/students/${studentId}/gpahistory`);
-    if (!res.ok) throw new Error("Failed to fetch GPA history");
-    const data = await res.json();
-    const gpaHistory = data.gpaHistory || [];
-    if (!Array.isArray(gpaHistory) || gpaHistory.length === 0) {
-      console.log("No GPA history data");
-      return;
-    }
-    const labels = gpaHistory.map(entry => entry.semester || entry.term || "");
-    const gpas = gpaHistory.map(entry => entry.gpa);
-    console.log("GPA BAR CHART DATA", { labels, gpas });
-    const canvas = document.getElementById("gpa-bar-chart");
-    if (!canvas) { console.log("gpa-bar-chart canvas not found"); return; }
-    const ctx = canvas.getContext("2d");
-    if (!ctx) { console.log("gpa-bar-chart context is null"); return; }
-    new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: "GPA",
-            data: gpas,
-            backgroundColor: "#4ecb7a",
-            borderRadius: 8,
-          },
-        ],
+        }]
       },
       options: {
+        responsive: true,
         scales: {
           y: {
-            min: 0,
+            beginAtZero: true,
             max: 4,
             ticks: {
               stepSize: 1,
-            },
-            title: { display: true, text: "GPA" },
-          },
+              callback: function(value) {
+                return ["F", "D", "C", "B", "A"][value] || "";
+              }
+            }
+          }
         },
         plugins: {
-          legend: { display: false },
-        },
-      },
+          legend: {
+            display: false
+          }
+        }
+      }
     });
-  } catch (err) {
-    console.error("Error rendering GPA bar chart:", err);
   }
-}
 
-/**
- * Renders a bar chart comparing the student's GPA with all students in the same year (grade).
- * @param {string} studentId - The current student's ID.
- */
-async function renderGpaComparisonBarChart(studentId) {
-  console.log("renderGpaComparisonBarChart called", studentId);
-  if (!studentId) return;
-  try {
-    const studentRes = await fetch(`/api/students/fetchstudents`);
-    if (!studentRes.ok) throw new Error("Failed to fetch students");
-    const allStudents = await studentRes.json();
-    const me = allStudents.find(s => s._id === studentId);
-    if (!me || typeof me.Grade === 'undefined' || typeof me.GPA === 'undefined') {
-      console.log("Current student not found or missing Grade/GPA", { me });
-      return;
-    }
-    const year = me.Grade;
-    const peersRes = await fetch(`/api/students/fetchstudents?grade=${year}`);
-    if (!peersRes.ok) throw new Error("Failed to fetch peers");
-    const peers = await peersRes.json();
-    peers.sort((a, b) => b.GPA - a.GPA);
-    const labels = peers.map(s => s.Student_Name === me.Student_Name ? `${s.Student_Name} (You)` : s.Student_Name);
-    const gpas = peers.map(s => s.GPA);
-    console.log("GPA COMPARISON BAR CHART DATA", { labels, gpas });
-    const canvas = document.getElementById("gpa-comparison-bar-chart");
-    if (!canvas) { console.log("gpa-comparison-bar-chart canvas not found"); return; }
-    const ctx = canvas.getContext("2d");
-    if (!ctx) { console.log("gpa-comparison-bar-chart context is null"); return; }
-    new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: "GPA",
+  // Function to render GPA comparison chart
+  async function renderGpaComparisonChart() {
+    try {
+      const [studentRes, peersRes] = await Promise.all([
+        fetchWithAuth(`/api/students/${studentId}`),
+        fetchWithAuth("/api/students/fetchstudents")
+      ]);
+
+      if (!studentRes.ok || !peersRes.ok) {
+        throw new Error("Failed to fetch student data");
+      }
+
+      const student = await studentRes.json();
+      const peers = await peersRes.json();
+
+      // Filter peers in the same grade and sort by GPA
+      const sameGradePeers = peers
+        .filter(p => p.Grade === student.Grade)
+        .sort((a, b) => b.GPA - a.GPA);
+
+      const labels = sameGradePeers.map(p => 
+        p._id === studentId ? `${p.Student_Name} (You)` : p.Student_Name
+      );
+      const gpas = sameGradePeers.map(p => p.GPA || 0);
+
+      const canvas = document.getElementById("gpa-comparison-bar-chart");
+      if (!canvas) {
+        console.error("GPA comparison chart canvas not found");
+        return;
+      }
+
+      new Chart(canvas, {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [{
             data: gpas,
             backgroundColor: labels.map(l => l.includes("(You)") ? "#4ecb7a" : "#b2d8c5"),
             borderRadius: 8,
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 4,
+              ticks: {
+                stepSize: 0.5
+              },
+              title: {
+                display: true,
+                text: "GPA"
+              }
+            }
           },
-        ],
-      },
-      options: {
-        scales: {
-          y: {
-            min: 0,
-            max: 4,
-            ticks: {
-              stepSize: 1,
+          plugins: {
+            legend: {
+              display: false
             },
-            title: { display: true, text: "GPA" },
-          },
-        },
-        plugins: {
-          legend: { display: false },
-          tooltip: { enabled: false }  // This disables the hover tooltip
-        },
-        hover: { mode: null }  // This disables the hover highlighting
-      },
-    });
-  } catch (err) {
-    console.error("Error rendering GPA comparison bar chart:", err);
+            tooltip: {
+              enabled: true,
+              callbacks: {
+                label: function(context) {
+                  return `GPA: ${context.raw.toFixed(2)}`;
+                }
+              }
+            }
+          }
+        }
+      });
+    } catch (error) {
+      console.error("Error rendering GPA comparison chart:", error);
+    }
   }
-}
 
-// Replace the GPA line chart with a bar chart and add the comparison chart below it
-// This should run on DOMContentLoaded
-
-document.addEventListener("DOMContentLoaded", function () {
-  const studentId = localStorage.getItem("studentId");
-  // GPA history bar chart
-  if (studentId && document.getElementById("gpa-bar-chart")) {
-    renderGpaBarChart(studentId);
-  }
-  // GPA comparison bar chart
-  if (studentId && document.getElementById("gpa-comparison-bar-chart")) {
-    renderGpaComparisonBarChart(studentId);
+  // Initialize charts and rank if student is logged in
+  if (studentId) {
+    renderGpaComparisonChart();
+    showStudentRank();
   }
 });

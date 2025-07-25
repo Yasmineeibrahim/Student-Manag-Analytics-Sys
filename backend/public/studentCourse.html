@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=<<device-width>>, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
@@ -13,7 +13,7 @@
       src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js"
       type="module"
     ></script>
-    <title>Document</title>
+    <title>Course Details - SAMS</title>
   </head>
   <body>
     <div class="dashboard-container">
@@ -21,7 +21,7 @@
         <!--top nav bar for student course details page-->
         <div class="logo">sams.</div>
         <nav>
-          <a href="/studentDashboard.html" class="active"
+          <a href="/studentDashboard.html"
             ><i class="fa-solid fa-table-columns"></i><span>Dashboard</span></a
           >
           <a href="/studentSettings.html"
@@ -31,9 +31,20 @@
       </aside>
       <!--main content for student course details page-->
       <main class="main-content-dashboard">
-        <div id="course-details" style="padding: 32px"></div>
+        <div id="course-details" style="padding: 32px">
+          <div class="loading-animation" style="text-align: center; padding: 40px;">
+            <dotlottie-wc
+              src="https://lottie.host/262b551a-5181-4189-8939-ef9450947ab4/3VOIRdN55F.lottie"
+              style="width: 200px; height: 200px"
+              speed="1"
+              autoplay
+              loop
+            ></dotlottie-wc>
+            <div style="color: #888; margin-top: 20px;">Loading course details...</div>
+          </div>
+        </div>
       </main>
     </div>
-    <script src="studentDashboard.js"></script>
+    <script src="studentCourse.js"></script>
   </body>
 </html>
