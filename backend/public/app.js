@@ -54,6 +54,8 @@ if (studentForm) {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
 
+    console.log("Attempting student login with email:", email);
+
     try {
       //send a POST request to the /api/studentLogin endpoint with the email and password
       const res = await fetch("/api/studentLogin", {
@@ -62,9 +64,15 @@ if (studentForm) {
         body: JSON.stringify({ email, password }),
       });
 
+      console.log("Login response status:", res.status);
       const data = await res.json();
-      //if the response is ok, store the student id and name in localStorage and redirect to studentDashboard.html
+      console.log("Login response data:", data);
+
+      //if the response is ok, store the student data and token in localStorage and redirect to studentDashboard.html
       if (res.ok) {
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+        }
         if (data.student && data.student._id) {
           localStorage.setItem("studentId", data.student._id);
         }
@@ -79,6 +87,7 @@ if (studentForm) {
         alert(data.message || "Login failed");
       }
     } catch (err) {
+      console.error("Login error:", err);
       alert("Server error. Try again later.");
     }
   });

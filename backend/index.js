@@ -76,14 +76,15 @@ app.post("/api/teacherLogin", async (req, res) => {
 
 
 app.post("/api/studentLogin", async (req, res) => {
-  console.log("BODY RECEIVED:", req.body);
+  console.log("Received student login request:", req.body);
   let { email, password } = req.body;
 
   if (!email || !password) {
+    console.log("Missing email or password");
     return res.status(400).json({ message: "Email and password are required" });
   }
   email = email.trim().toLowerCase();
-  console.log("Login attempt with email:", email);
+  console.log("Processing login for email:", email);
   try {
     const student = await Student.findOne({ Email: email });
     if (!student) {
@@ -92,10 +93,18 @@ app.post("/api/studentLogin", async (req, res) => {
     }
 
     if (password !== student.Password) {
+      console.log("Invalid password for student:", email);
       return res.status(401).json({ message: "Invalid credentials" });
     }
     const { Password, ...studentData } = student.toObject();
-    res.status(200).json({ message: "Login successful", student: studentData });
+    const token = generateToken(student._id);
+
+    console.log("Login successful for student:", email);
+    res.status(200).json({
+      message: "Login successful",
+      token,
+      student: studentData
+    });
   } catch (error) {
     console.error("Error during login:", error);
     res.status(500).json({ message: "Internal server error" });
