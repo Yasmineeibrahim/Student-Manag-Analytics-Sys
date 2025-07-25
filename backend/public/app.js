@@ -8,6 +8,8 @@ if (teacherForm) {
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
 
+    console.log("Attempting teacher login with email:", email);
+
     try {
       //send a POST request to the /api/teacherLogin endpoint with the email and password
       const res = await fetch("/api/teacherLogin", {
@@ -16,20 +18,28 @@ if (teacherForm) {
         body: JSON.stringify({ email, password }),
       });
 
+      console.log("Login response status:", res.status);
       const data = await res.json();
+      console.log("Login response data:", data);
+
       //if the response is ok, store the teacher id and name in localStorage and redirect to teacherDashboard.html
       if (res.ok) {
-        if (data.teacher && data.teacher._id) {
-          localStorage.setItem("teacherId", data.teacher._id);
-        }
-        if (data.teacher && data.teacher.Teacher_Name) {
-          localStorage.setItem("teacherName", data.teacher.Teacher_Name);
-        }
+       if (data.token) {
+  localStorage.setItem("token", data.token);
+}
+if (data.teacher && data.teacher._id) {
+  localStorage.setItem("teacherId", data.teacher._id);
+}
+if (data.teacher && data.teacher.Teacher_Name) {
+  localStorage.setItem("teacherName", data.teacher.Teacher_Name);
+}
+
         window.location.href = "/teacherDashboard.html";
       } else {
         alert(data.message || "Login failed");
       }
     } catch (err) {
+      console.error("Login error:", err);
       alert("Server error. Try again later.");
     }
   });

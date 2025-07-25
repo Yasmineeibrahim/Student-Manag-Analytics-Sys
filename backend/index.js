@@ -10,6 +10,7 @@ import { fileURLToPath } from "url";
 import Teacher from "./models/teacherModel.js";
 import Student from "./models/studentModel.js";
 import Grade from "./models/gradeModel.js";
+import generateToken from './utils/generateToken.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -38,14 +39,14 @@ app.get("/", (req, res) => {
 });
 
 app.post("/api/teacherLogin", async (req, res) => {
-  console.log("BODY RECEIVED:", req.body);
+  console.log("Received teacher login request:", req.body);
   let { email, password } = req.body;
-
   if (!email || !password) {
+    console.log("Missing email or password");
     return res.status(400).json({ message: "Email and password are required" });
   }
   email = email.trim().toLowerCase();
-  console.log("Login attempt with email:", email);
+  console.log("Processing login for email:", email);
   try {
     const teacher = await Teacher.findOne({ Email: email });
     if (!teacher) {
@@ -54,16 +55,25 @@ app.post("/api/teacherLogin", async (req, res) => {
     }
 
     if (password !== teacher.Password) {
+      console.log("Invalid password for teacher:", email);
       return res.status(401).json({ message: "Invalid credentials" });
     }
-    const { Password, ...teacherData } = teacher.toObject();
 
-    res.status(200).json({ message: "Login successful", teacher: teacherData });
+    const { Password, ...teacherData } = teacher.toObject();
+    const token = generateToken(teacher._id);
+
+    console.log("Login successful for teacher:", email);
+    res.status(200).json({
+      message: "Login successful",
+      token,
+      teacher: teacherData,
+    });
   } catch (error) {
     console.error("Error during login:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 app.post("/api/studentLogin", async (req, res) => {
   console.log("BODY RECEIVED:", req.body);

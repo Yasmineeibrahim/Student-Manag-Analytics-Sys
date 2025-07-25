@@ -543,9 +543,24 @@ label {
   padding: 8px 24px;
   font-weight: 600;
   text-decoration: none;
-  font-size: 0rem;
+  font-size: 0.9rem;
   border: none;
   transition: background 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+
+.resource-btn:hover {
+  background: #f0c5f7;
+  transform: translateY(-1px);
+}
+
+.resource-btn.view {
+  background: #eaf6ef;
+  color: #2e6a4a;
+}
+
+.resource-btn.view:hover {
+  background: #d5eadc;
 }
 canvas {
   width: 70%;
